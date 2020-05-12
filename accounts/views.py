@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
-from .forms import SignUpForm
-from .tokens import account_activation_token
-from .utils import SendEmail
-from .models import User
+from accounts.forms import SignUpForm
+from accounts.tokens import token_generator
+from accounts.utils import SendEmail
+from accounts.models import User
 
 
 def signup(request):
@@ -14,7 +14,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             uid = urlsafe_base64_encode(force_bytes(user.pk))
-            token = account_activation_token.make_token(user)
+            token = token_generator.make_token(user)
             path = reverse(
                 "accounts:activate_account", kwargs={"uid": uid, "token": token}
             )
@@ -32,7 +32,7 @@ def activate_account(request, **kwargs):
     except:
         user = None
 
-    if user is not None and account_activation_token.check_token(user, kwargs["token"]):
+    if user is not None and token_generator.check_token(user, kwargs["token"]):
         user.is_active = True
         user.save()
         return redirect("home")
