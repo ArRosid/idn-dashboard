@@ -6,5 +6,5 @@ app_name = "accounts"
 
 urlpatterns = [
     path("signup/", signup, name="signup"),
-    path("signup/<str:uid>/<str:token>/", activate_account, name="activate_account")
+    path("signup/<str:uid>/<str:token>/", activate_account, name="activate_account"),
 ]

@@ -14,26 +14,21 @@ class ProfileInline(admin.StackedInline):
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    inlines = (ProfileInline, )
+    inlines = (ProfileInline,)
 
-    ordering = ['id']
-    list_display = ['email', 'name', 'get_company', 'created_at']
+    ordering = ["id"]
+    list_display = ["email", "name", "get_company", "created_at"]
     fieldsets = (
-        (None, dict(fields=('email', 'password'))),
-        (_('Personal Info'), {'fields': ('name', )}),
-        (
-            _("Permissions"),
-            dict(fields=('is_active', 'is_staff', 'is_superuser'))
-        ),
-        (_('Important dates'), dict(fields=('last_login',)))
+        (None, dict(fields=("email", "password"))),
+        (_("Personal Info"), {"fields": ("name",)}),
+        (_("Permissions"), dict(fields=("is_active", "is_staff", "is_superuser"))),
+        (_("Important dates"), dict(fields=("last_login",))),
     )
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')
-        }),
+        (None, {"classes": ("wide",), "fields": ("email", "password1", "password2")}),
     )
 
     def get_company(self, instance):
         return instance.profile.company
+
     get_company.short_description = "Company"

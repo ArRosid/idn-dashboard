@@ -15,7 +15,9 @@ def signup(request):
             user = form.save()
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = account_activation_token.make_token(user)
-            path = reverse("accounts:activate_account", kwargs={"uid": uid, "token": token})
+            path = reverse(
+                "accounts:activate_account", kwargs={"uid": uid, "token": token}
+            )
             link = request.build_absolute_uri(path)
             SendEmail(user=user).account_activation(link=link)
     else:
