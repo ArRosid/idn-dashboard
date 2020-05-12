@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
-from django.conf import settings
 from .forms import SignUpForm
 from .tokens import account_activation_token
 from .utils import SendEmail
