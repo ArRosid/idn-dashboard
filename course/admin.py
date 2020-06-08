@@ -27,7 +27,7 @@ class RegistrationAdmin(admin.ModelAdmin):
 
 @admin.register(PaymentConfirm)
 class PaymentConfirmAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("registration", "amount", "created_at")
 
 
 @admin.register(Scheddule)

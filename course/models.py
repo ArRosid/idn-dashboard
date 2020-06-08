@@ -2,6 +2,7 @@ from django.db import models
 from core.models import BaseModel
 from accounts.models import User
 from course.choices import TrainingType, RegistrationStatus, Month
+from course.utils import upload_bukti_pembayaran
 
 
 class TrainingCategory(BaseModel):
@@ -70,8 +71,8 @@ class Registration(BaseModel):
     def __str__(self):
         return f"{self.user} - {self.training}"
 
-    class Meta:
-        unique_together = ("user", "training")
+    # class Meta:
+    #     unique_together = ("user", "training")
 
     def get_status(self):
         return RegistrationStatus.choices[self.status][1]
@@ -84,7 +85,10 @@ class PaymentConfirm(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    proof_of_payment = models.FileField()
+    proof_of_payment = models.FileField(upload_to=upload_bukti_pembayaran)
 
     class Meta:
         verbose_name = "Payment Confirm"
+
+    def __str__(self):
+        return f"{self.user} - {self.registration.training}"

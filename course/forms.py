@@ -1,7 +1,7 @@
 from django import forms
 from course.models import Registration
 from course.choices import TrainingType
-from course.models import TrainingCategory, MonthYearScheddule, Training
+from course.models import TrainingCategory, MonthYearScheddule, PaymentConfirm
 
 
 class RegistrationFormAdd(forms.ModelForm):
@@ -24,3 +24,9 @@ class RegistrationFormUpdate(forms.ModelForm):
     class Meta:
         model = Registration
         fields = ("training", "scheddule")
+
+
+class PaymentConfirmForm(forms.ModelForm):
+    class Meta:
+        model = PaymentConfirm
+        fields = ("amount", "proof_of_payment")

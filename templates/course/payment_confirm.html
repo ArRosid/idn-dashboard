@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3 class="card-title">Konfirmasi Pembayaran</h3>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+      {% include 'includes/form.html' %}
+        <button type="submit" class="mt-2 btn btn-success">Upload</button>
+  </form>
+
+{% endblock %}
