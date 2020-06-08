@@ -37,3 +37,8 @@ class UserAdmin(BaseUserAdmin):
 @admin.register(LinkToken)
 class LinkTokenAdmin(admin.ModelAdmin):
     list_display = ["key", "user", "used_for", "is_valid"]
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ["user", "company"]

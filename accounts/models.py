@@ -5,6 +5,7 @@ from core.models import BaseModel
 from accounts.managers import UserManager
 from accounts.choices import LinkModelUsedFor
 
+
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=100)
@@ -15,6 +16,9 @@ class User(AbstractBaseUser, PermissionsMixin, BaseModel):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    def __str__(self):
+        return self.email
 
 
 class LinkToken(models.Model):
@@ -30,10 +34,21 @@ class LinkToken(models.Model):
     def __str__(self):
         return self.key
 
+
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    company = models.CharField(max_length=100)
-    address = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=20)
-    facebook = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    company = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    facebook = models.CharField(max_length=100, null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.user}"
+
+    def is_valid(self):
+        for field_name in self._meta.get_fields():
+            value = getattr(self, field_name.name, None)
+            if value is None:
+                return False
+        return True
