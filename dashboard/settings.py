@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from django.contrib.messages import constants as messages
 import os
 import environ
 
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd party apps
-    'widget_tweaks',
+    "widget_tweaks",
     # new apps
     "accounts",
     "course",
@@ -133,3 +134,11 @@ BASE_URL = env.str("BASE_URL")
 LOGOUT_REDIRECT_URL = "home:home"
 LOGIN_REDIRECT_URL = "home:home"
 LOGIN_URL = "accounts:login"
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "alert-info",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
+}
