@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext as _
 
-from accounts.models import User, Profile
+from accounts.models import User, Profile, LinkToken
 
 
 class ProfileInline(admin.StackedInline):
@@ -17,7 +17,7 @@ class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline,)
 
     ordering = ["id"]
-    list_display = ["email", "name", "get_company", "created_at"]
+    list_display = ["email", "name", "get_company", "is_active", "is_staff"]
     fieldsets = (
         (None, dict(fields=("email", "password"))),
         (_("Personal Info"), {"fields": ("name",)}),
@@ -32,3 +32,8 @@ class UserAdmin(BaseUserAdmin):
         return instance.profile.company
 
     get_company.short_description = "Company"
+
+
+@admin.register(LinkToken)
+class LinkTokenAdmin(admin.ModelAdmin):
+    list_display = ["key", "user", "used_for", "is_valid"]

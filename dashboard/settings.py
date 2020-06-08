@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd party apps
+    'widget_tweaks',
     # new apps
     "accounts",
     "course",
@@ -127,3 +129,7 @@ EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
 
 BASE_URL = env.str("BASE_URL")
+
+LOGOUT_REDIRECT_URL = "home:home"
+LOGIN_REDIRECT_URL = "home:home"
+LOGIN_URL = "accounts:login"

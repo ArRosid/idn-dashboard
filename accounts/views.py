@@ -1,11 +1,9 @@
-from django.shortcuts import render, redirect
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from accounts.forms import SignUpForm
 from accounts.tokens import token_generator
 from accounts.utils import SendEmail
-from accounts.models import User
+from accounts.models import User, LinkToken
 
 
 def signup(request):
@@ -13,13 +11,16 @@ def signup(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            user.is_active = False
+            user.save()
             token = token_generator.make_token(user)
+            LinkToken.objects.create(user=user, key=token, used_for=0)
             path = reverse(
-                "accounts:activate_account", kwargs={"uid": uid, "token": token}
+                "accounts:activate_account", kwargs={"token": token}
             )
             link = request.build_absolute_uri(path)
             SendEmail(user=user).account_activation(link=link)
+            return HttpResponse("<h1>Check your email</h1>")
     else:
         form = SignUpForm()
     return render(request, "accounts/signup.html", {"form": form})
@@ -27,14 +28,17 @@ def signup(request):
 
 def activate_account(request, **kwargs):
     try:
-        uid = force_text(urlsafe_base64_decode(kwargs["uid"]))
-        user = User.objects.get(pk=uid)
+        key = kwargs["token"]
+        token = LinkToken.objects.get(key=key)
     except:
-        user = None
+        token = None
 
-    if user is not None and token_generator.check_token(user, kwargs["token"]):
-        user.is_active = True
-        user.save()
-        return redirect("home")
+    if token is not None and token.is_valid:
+        token.user.is_active = True
+        token.user.save()
+        token.is_valid = False
+        token.save()
+        return redirect("home:home")
     else:
-        return "<h1>activation invalid</h1>"
+        return HttpResponse("<h1>Activation link not valid!</h1>")
+
