@@ -1,4 +1,80 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Home</h1>
+
+
+    <h3>History Training</h3>
+    <a href="{% url 'course:daftar_training' %}">
+        <button type="button" class="mt-2 btn btn-primary mb-2">Daftar Training</button>
+    </a>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nama Training</th>
+      <th scope="col">Tipe Training</th>
+      <th scope="col">Jadwal</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for reg in registrations %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ reg.training }}</td>
+      <td>{{ reg.get_training_type }}</td>
+      <td>{{ reg.scheddule }}</td>
+      <td>{{ reg.get_status }}</td>
+      <td>
+          <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Action
+          </button>
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'course:edit_pendaftaran' reg.id %}">Edit</a>
+              <a class="dropdown-item" href="#">Konfirmasi Pembayaran</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ reg.id }}">Delete</a>
+          </div>
+        </div>
+      </td>
+
+    </tr>
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal-{{ reg.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Anda yakin ingin menghapus training {{ reg.training }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{% url 'course:delete_registration' reg.id %}">
+                  <button type="button" class="btn btn-danger">Delete</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#deleteModal').on('show.bs.modal', function (event) {
+          let regid = $(event.relatedTarget).data('regid')
+          let regname = $(event.relatedTarget).data('regname')
+        })
+    </script>
 {% endblock %}

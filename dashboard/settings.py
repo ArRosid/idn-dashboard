@@ -45,10 +45,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # 3rd party apps
     "widget_tweaks",
+    "rest_framework",
     # new apps
     "accounts",
     "course",
     "home",
+    "api",
 ]
 
 MIDDLEWARE = [

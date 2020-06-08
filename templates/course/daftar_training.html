@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% block title %}Daftar Training{% endblock title %}
+{% load form_tags widget_tweaks %}
+
+{% block content %}
+    <h3 class="card-title">Daftar Training</h3>
+  <div class="row">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <form method="post" novalidate>
+        {% csrf_token %}
+          {% if form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                  <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+                {% endfor %}
+              </div>
+          {% endif %}
+          {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {% render_field field class=field|input_class %}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">
+                        {{ field.help_text }}
+                    </small>
+                {% endif %}
+            </div>
+          {% endfor %}
+          <strong>Untuk jadwal, silahkan pilih sesuai dengan <a href="https://idn.id/jadwal" target="_blank">idn.id/jadwal</a></strong>
+          <br>
+        <button type="submit" class="mt-2 btn btn-success">{{ button }}</button>
+      </form>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block js %}
+<script>
+
+{#Jika training category ganti, list training ganti#}
+ $("#id_training_category").change(function () {
+    $('#id_training').html("<option value=''>Loading...</option>");
+    let category_id = $("#id_training_category").val();
+    $.ajax({
+        url: "{% url 'api:TrainingList' %}",
+        type: "GET",
+        data: {category_id:category_id},
+        success: function (res, textStatus, jQxhr) {
+            console.log(res)
+            $('#id_training').html("");
+            for (i in res) {
+                $('#id_training').append("<option value='" + res[i]['id'] + "'>" + res[i]['name'] + "</option>");
+            }
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            //console.log(errorThrown);
+        }
+    });
+ });
+
+
+{#jika training ganti, scheddules ganti#}
+$("#id_training").change(function () {
+    $('#id_scheddule').html("<option value=''>Loading...</option>");
+    let training_id = $("#id_training").val();
+    let training_type_id = $("#id_training_type").val();
+    let month_year_id = $("#id_month_year").val();
+    $.ajax({
+        url: "{% url 'api:SchedduleList' %}",
+        type: "GET",
+        data: {training_id:training_id, training_type_id:training_type_id, month_year_id:month_year_id},
+        success: function (res, textStatus, jQxhr) {
+            console.log(res)
+            $('#id_scheddule').html("");
+            for (i in res) {
+                $('#id_scheddule').append("<option value='" + res[i]['id'] + "'>" + res[i]['day'] + "</option>");
+            }
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            //console.log(errorThrown);
+        }
+    });
+});
+
+
+{# jika training type berubah, scheddule juga berubah #}
+$("#id_training_type").change(function () {
+    $('#id_scheddule').html("<option value=''>Loading...</option>");
+    let training_id = $("#id_training").val();
+    let training_type_id = $("#id_training_type").val();
+    let month_year_id = $("#id_month_year").val();
+    $.ajax({
+        url: "{% url 'api:SchedduleList' %}",
+        type: "GET",
+        data: {training_id:training_id, training_type_id:training_type_id, month_year_id:month_year_id},
+        success: function (res, textStatus, jQxhr) {
+            console.log(res)
+            $('#id_scheddule').html("");
+            for (i in res) {
+                $('#id_scheddule').append("<option value='" + res[i]['id'] + "'>" + res[i]['day'] + "</option>");
+            }
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            //console.log(errorThrown);
+        }
+    });
+});
+
+
+{# jika month year berubah, scheddule juga berubah #}
+$("#id_month_year").change(function () {
+    $('#id_scheddule').html("<option value=''>Loading...</option>");
+    let training_id = $("#id_training").val();
+    let training_type_id = $("#id_training_type").val();
+    let month_year_id = $("#id_month_year").val();
+    $.ajax({
+        url: "{% url 'api:SchedduleList' %}",
+        type: "GET",
+        data: {training_id:training_id, training_type_id:training_type_id, month_year_id:month_year_id},
+        success: function (res, textStatus, jQxhr) {
+            console.log(res)
+            $('#id_scheddule').html("");
+            for (i in res) {
+                $('#id_scheddule').append("<option value='" + res[i]['id'] + "'>" + res[i]['day'] + "</option>");
+            }
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            //console.log(errorThrown);
+        }
+    });
+});
+
+
+
+</script>
+
+{% endblock js %}
+
+
+
+
