@@ -85,7 +85,7 @@ class PaymentConfirm(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    proof_of_payment = models.FileField(upload_to=upload_bukti_pembayaran)
+    proof_of_payment = models.ImageField(upload_to=upload_bukti_pembayaran)
 
     class Meta:
         verbose_name = "Payment Confirm"
