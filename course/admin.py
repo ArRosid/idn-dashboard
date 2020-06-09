@@ -22,7 +22,7 @@ class TrainingAdmin(admin.ModelAdmin):
 
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
-    list_display = ("user", "training", "scheddule")
+    list_display = ("user", "training", "training_type", "scheddule")
 
 
 @admin.register(PaymentConfirm)

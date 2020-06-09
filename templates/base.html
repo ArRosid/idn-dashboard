@@ -54,7 +54,9 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-        {% block sidebar %} {% endblock %}
+        {% if user.is_staff %}
+            {% include 'includes/sidebar_admin.html' %}
+        {% endif %}
 
       <!-- Sidebar Toggler (Sidebar) -->
       <div class="mt-auto text-center d-none d-md-inline">

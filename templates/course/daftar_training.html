@@ -17,7 +17,9 @@
           {% endif %}
           {% for field in form %}
             <div class="form-group">
+                {% if not field.is_hidden %}
                 {{ field.label_tag }}
+                {% endif %}
                 {% render_field field class=field|input_class %}
                 {% for error in field.errors %}
                     <div class="invalid-feedback">

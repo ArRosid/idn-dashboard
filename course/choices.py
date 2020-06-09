@@ -6,11 +6,17 @@ class TrainingType:
         (3, "Premium Webinar"),
         (4, "Free Webinar"),
     )
+    dict_choices = dict([i[::-1] for i in choices])
 
 
 class RegistrationStatus:
     not_paid = 0
-    choices = ((0, "Not Paid"), (1, "Wait for Confirm"), (2, "Paid"))
+    choices = (
+        (0, "Not Paid"),
+        (1, "Wait for Confirm"),
+        (2, "Paid DP"),
+        (3, "Paid Lunas"),
+    )
 
 
 class Month:

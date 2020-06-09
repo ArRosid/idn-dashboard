@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from core.models import BaseModel
 from accounts.models import User
 from course.choices import TrainingType, RegistrationStatus, Month
@@ -20,6 +21,9 @@ class Training(BaseModel):
     category = models.ForeignKey(TrainingCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     duration = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together = ("category", "name", "duration")
 
     def __str__(self):
         return self.name
@@ -53,13 +57,25 @@ class Scheddule(BaseModel):
     month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.CASCADE)
     day = models.ForeignKey(DayScheddule, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ("training", "training_type", "month_year", "day")
+
     def __str__(self):
         return f"{self.day}"
+
+    def get_training_type(self):
+        return TrainingType.choices[self.training_type][1]
+
+    def get_jml_peserta(self):
+        all_reg = Registration.objects.filter(scheddule=self)
+        paid_reg = all_reg.filter(Q(status=2) | Q(status=3))
+        return len(paid_reg)
 
 
 class Registration(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     training_category = models.ForeignKey(TrainingCategory, on_delete=models.CASCADE)
+    training_type = models.PositiveSmallIntegerField(choices=TrainingType.choices)
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.CASCADE)
     scheddule = models.ForeignKey(Scheddule, on_delete=models.CASCADE)
@@ -71,8 +87,8 @@ class Registration(BaseModel):
     def __str__(self):
         return f"{self.user} - {self.training}"
 
-    # class Meta:
-    #     unique_together = ("user", "training")
+    class Meta:
+        unique_together = ("user", "training", "training_type")
 
     def get_status(self):
         return RegistrationStatus.choices[self.status][1]
