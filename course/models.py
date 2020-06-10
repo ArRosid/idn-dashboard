@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 from core.models import BaseModel
 from accounts.models import User
-from course.choices import TrainingType, RegistrationStatus, Month
+from course.choices import TrainingType, RegistrationPaymentStatus, Month
 from course.utils import upload_bukti_pembayaran
 
 
@@ -80,7 +80,8 @@ class Registration(BaseModel):
     month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.CASCADE)
     scheddule = models.ForeignKey(Scheddule, on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(
-        choices=RegistrationStatus.choices, default=RegistrationStatus.not_paid
+        choices=RegistrationPaymentStatus.choices,
+        default=RegistrationPaymentStatus.not_paid,
     )
     is_retraining = models.BooleanField(default=False)
 
@@ -91,7 +92,7 @@ class Registration(BaseModel):
         unique_together = ("user", "training", "training_type")
 
     def get_status(self):
-        return RegistrationStatus.choices[self.status][1]
+        return RegistrationPaymentStatus.choices[self.status][1]
 
     def get_training_type(self):
         return TrainingType.choices[self.scheddule.training_type][1]
@@ -102,9 +103,13 @@ class PaymentConfirm(BaseModel):
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE)
     amount = models.IntegerField()
     proof_of_payment = models.ImageField(upload_to=upload_bukti_pembayaran)
+    status = models.PositiveSmallIntegerField(choices=RegistrationPaymentStatus.choices)
 
     class Meta:
         verbose_name = "Payment Confirm"
+
+    def get_status(self):
+        return RegistrationPaymentStatus.choices[self.status][1]
 
     def __str__(self):
         return f"{self.user} - {self.registration.training}"

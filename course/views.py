@@ -1,4 +1,6 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
@@ -16,6 +18,7 @@ from course.models import (
     Scheddule,
     MonthYearScheddule,
     DayScheddule,
+    PaymentConfirm,
 )
 from course.choices import TrainingType
 import csv
@@ -81,6 +84,7 @@ def payment_confirm(request, registration_id):
             payment = form.save(commit=False)
             payment.registration = reg
             payment.user = request.user
+            payment.status = 1
             payment.save()
             reg.status = 1
             reg.save()
@@ -205,3 +209,108 @@ def delete_training(request, pk):
     training.delete()
     messages.error(request, "Training berhasil di hapus")
     return redirect("course:list_training")
+
+
+@staff_member_required(login_url="accounts:login")
+def list_pembayaran(request):
+    list_pembayaran = PaymentConfirm.objects.filter(status=1)
+    return render(
+        request, "course/list_pembayaran.html", {"list_pembayaran": list_pembayaran}
+    )
+
+
+@staff_member_required(login_url="accounts:login")
+def list_pembayaran_dp_lunas(request):
+    list_pembayaran = PaymentConfirm.objects.filter(Q(status=2) | Q(status=3))
+    return render(
+        request,
+        "course/list_pembayaran_dp_lunas.html",
+        {"list_pembayaran": list_pembayaran, "title": "List Pembayaran DP / Lunas"},
+    )
+
+
+@staff_member_required(login_url="accounts:login")
+def list_pembayaran_ditolak(request):
+    list_pembayaran = PaymentConfirm.objects.filter(Q(status=4))
+    return render(
+        request,
+        "course/list_pembayaran_dp_lunas.html",
+        {"list_pembayaran": list_pembayaran, "title": "List Pembayaran Ditolak"},
+    )
+
+
+@staff_member_required(login_url="accounts:login")
+def konfirmasi_pembayaran_dp(request, pk):
+    pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+    pembayaran.registration.status = 2
+    pembayaran.registration.save()
+    pembayaran.status = 2
+    pembayaran.save()
+    return redirect("course:list_pembayaran")
+
+
+@staff_member_required(login_url="accounts:login")
+def konfirmasi_pembayaran_lunas(request, pk):
+    pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+    pembayaran.registration.status = 3
+    pembayaran.registration.save()
+    pembayaran.status = 3
+    pembayaran.save()
+    return redirect("course:list_pembayaran_dp_lunas")
+
+
+@staff_member_required(login_url="accounts:login")
+def hapus_konfirmasi(request, pk):
+    pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+    pembayaran.registration.status = 1
+    pembayaran.registration.save()
+    pembayaran.status = 1
+    pembayaran.save()
+    return redirect("course:list_pembayaran_dp_lunas")
+
+
+@staff_member_required(login_url="accounts:login")
+def tolak_pembayaran(request, pk):
+    pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+    pembayaran.registration.status = 4
+    pembayaran.registration.save()
+    pembayaran.status = 4
+    pembayaran.save()
+    return redirect("course:list_pembayaran_dp_lunas")
+
+
+@staff_member_required(login_url="accounts:login")
+def list_pendaftar_belum_bayar(request):
+    list_pendaftar = Registration.objects.filter(status=0)
+    return render(
+        request, "course/list_pendaftar.html", {"list_pendaftar": list_pendaftar}
+    )
+
+
+@staff_member_required(login_url="accounts:login")
+def export_pendaftar_belum_bayar(request):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="pendaftar_belum_bayar.csv"'
+
+    writer = csv.writer(response, delimiter=";")
+
+    writer.writerow(["User", "Training", "Training Type", "Jadwal", "No HP", "Email"])
+
+    rows = []
+    list_pendaftar = Registration.objects.filter(status=0)
+    for pendaftar in list_pendaftar:
+        col = []
+        col.append(pendaftar.user.profile.name)
+        col.append(pendaftar.training.name)
+        col.append(pendaftar.get_training_type())
+        col.append(
+            f"{pendaftar.scheddule.day}, {pendaftar.scheddule.month_year.month} {pendaftar.scheddule.month_year.year}"
+        )
+        col.append(pendaftar.user.profile.phone_number)
+        col.append(pendaftar.user.email)
+        rows.append(col)
+
+    for row in rows:
+        writer.writerow(row)
+
+    return response

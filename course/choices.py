@@ -9,13 +9,14 @@ class TrainingType:
     dict_choices = dict([i[::-1] for i in choices])
 
 
-class RegistrationStatus:
+class RegistrationPaymentStatus:
     not_paid = 0
     choices = (
         (0, "Not Paid"),
         (1, "Wait for Confirm"),
         (2, "Paid DP"),
         (3, "Paid Lunas"),
+        (4, "Pembayaran di Tolak"),
     )
 
 

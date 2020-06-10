@@ -13,6 +13,15 @@ from course.views import (
     add_training,
     UpdateTraining,
     delete_training,
+    list_pembayaran,
+    list_pembayaran_dp_lunas,
+    list_pembayaran_ditolak,
+    konfirmasi_pembayaran_dp,
+    konfirmasi_pembayaran_lunas,
+    hapus_konfirmasi,
+    tolak_pembayaran,
+    list_pendaftar_belum_bayar,
+    export_pendaftar_belum_bayar,
 )
 
 app_name = "course"
@@ -35,4 +44,37 @@ urlpatterns = [
     path("add_training/", add_training, name="add_training"),
     path("update_training/<int:pk>/", UpdateTraining.as_view(), name="update_training"),
     path("delete_training/<int:pk>/", delete_training, name="delete_training"),
+    path("list_pembayaran/", list_pembayaran, name="list_pembayaran"),
+    path(
+        "list_pembayaran_dp_lunas/",
+        list_pembayaran_dp_lunas,
+        name="list_pembayaran_dp_lunas",
+    ),
+    path(
+        "list_pembayaran_ditolak/",
+        list_pembayaran_ditolak,
+        name="list_pembayaran_ditolak",
+    ),
+    path(
+        "konfirmasi_pembayaran_dp/<int:pk>/",
+        konfirmasi_pembayaran_dp,
+        name="konfirmasi_pembayaran_dp",
+    ),
+    path(
+        "konfirmasi_pembayaran_lunas/<int:pk>/",
+        konfirmasi_pembayaran_lunas,
+        name="konfirmasi_pembayaran_lunas",
+    ),
+    path("hapus_konfirmasi/<int:pk>/", hapus_konfirmasi, name="hapus_konfirmasi"),
+    path("tolak_pembayaran/<int:pk>/", tolak_pembayaran, name="tolak_pembayaran"),
+    path(
+        "list_pendaftar_belum_bayar/",
+        list_pendaftar_belum_bayar,
+        name="list_pendaftar_belum_bayar",
+    ),
+    path(
+        "export_pendaftar_belum_bayar/",
+        export_pendaftar_belum_bayar,
+        name="export_pendaftar_belum_bayar",
+    ),
 ]

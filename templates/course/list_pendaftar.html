@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <h3>List Pendaftaran Belum Bayar</h3>
+    <a href="{% url 'course:export_pendaftar_belum_bayar' %}">
+        <button type="button" class="mt-2 btn btn-primary mb-2">Export</button>
+    </a>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nama Peserta</th>
+      <th scope="col">Training</th>
+      <th scope="col">Training Type</th>
+      <th scope="col">Jadwal</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for pendaftar in list_pendaftar %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ pendaftar.user.profile.name }}</td>
+      <td>{{ pendaftar.training.name }}</td>
+      <td>{{ pendaftar.get_training_type }}</td>
+      <td>{{ pendaftar.scheddule }}</td>
+
+      <td>
+          <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Action
+          </button>
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'course:konfirmasi_pembayaran_dp' pendaftar.id %}">Konfirmasi DP</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'course:konfirmasi_pembayaran_lunas' pendaftar.id %}">Konfirmasi Lunas</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'course:tolak_pembayaran' pendaftar.id %}">Tolak Pembayaran</a>
+
+          </div>
+        </div>
+      </td>
+
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
