@@ -25,7 +25,4 @@ urlpatterns = [
     path("api/", include("api.urls", namespace="api")),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("course/", include("course.urls", namespace="course")),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
