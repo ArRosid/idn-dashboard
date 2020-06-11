@@ -7,6 +7,7 @@ from course.models import (
     PaymentConfirm,
     Training,
     Scheddule,
+    Discount,
 )
 
 
@@ -23,6 +24,7 @@ class RegistrationFormAdd(forms.ModelForm):
             "training_type",
             "month_year",
             "scheddule",
+            "diskon_kode",
         )
 
 
@@ -48,3 +50,10 @@ class TrainingForm(forms.ModelForm):
     class Meta:
         model = Training
         fields = ("category", "name", "duration")
+
+
+class DiscountForm(forms.ModelForm):
+    class Meta:
+        model = Discount
+        fields = ("kode", "persen", "end_date", "training_type")
+        widgets = {"end_date": forms.TextInput(attrs={"placeholder": "YYYY-MM-DD"})}

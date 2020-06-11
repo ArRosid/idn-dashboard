@@ -2,41 +2,36 @@
 {% block content %}
 
 
-    <h3>List Jadwal</h3>
-    <a href="{% url 'course:upload_jadwal' %}">
-        <button type="button" class="mt-2 btn btn-primary mb-2">Import Jadwal</button>
-    </a>
-    <a href="{% url 'course:add_jadwal' %}">
-        <button type="button" class="mt-2 btn btn-primary mb-2">Add Jadwal</button>
+    <h3>List Diskon</h3>
+    <a href="{% url 'course:add_diskon' %}">
+        <button type="button" class="mt-2 btn btn-primary mb-2">Add Diskon</button>
     </a>
     <table class="table">
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Nama Training</th>
-      <th scope="col">Tipe Training</th>
-      <th scope="col">Jadwal</th>
-      <th scope="col">Jumlah Peserta</th>
+      <th scope="col">Diskon Kode</th>
+      <th scope="col">Persen</th>
+      <th scope="col">End Date</th>
+      <th scope="col">Training Type</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
-    {% for s in scheds %}
+    {% for s in diskon %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ s.training }}</td>
+      <td>{{ s.kode }}</td>
+      <td>{{ s.persen }}</td>
+      <td>{{ s.end_date }}</td>
       <td>{{ s.get_training_type }}</td>
-      <td>{{ s.day }}</td>
-      <td>{{ s.get_jml_peserta }}</td>
       <td>
           <div class="btn-group">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Action
           </button>
               <div class="dropdown-menu">
-              <a class="dropdown-item" href="{% url 'course:list_peserta' s.id %}">List Peserta</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{% url 'course:update_jadwal' s.id %}">Edit</a>
+              <a class="dropdown-item" href="{% url 'course:update_diskon' s.id %}">Edit</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ s.id }}">Delete</a>
               </div>
@@ -57,11 +52,11 @@
                 </button>
               </div>
               <div class="modal-body">
-                Anda yakin ingin menghapus training {{ s.training }} {{ s.get_training_type }} {{ s.day }}
+                Anda yakin ingin menghapus training {{ s.kode }}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="{% url 'course:delete_jadwal' s.id %}">
+                <a href="{% url 'course:delete_diskon' s.id %}">
                   <button type="button" class="btn btn-danger">Delete</button>
                 </a>
               </div>

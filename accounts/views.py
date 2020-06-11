@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth import login
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.tokens import token_generator
 from accounts.utils import SendEmail
-from accounts.models import User, LinkToken
+from accounts.models import LinkToken
 
 
 def signup(request):
@@ -20,7 +21,11 @@ def signup(request):
             path = reverse("accounts:activate_account", kwargs={"token": token})
             link = request.build_absolute_uri(path)
             SendEmail(user=user).account_activation(link=link)
-            return HttpResponse("<h1>Check your email</h1>")
+            messages.success(
+                request,
+                "Akun Anda berhasil dibuat, silahkan check email untuk melakukan konfirmasi",
+            )
+
     else:
         form = SignUpForm()
     return render(request, "accounts/signup.html", {"form": form})
@@ -38,9 +43,14 @@ def activate_account(request, **kwargs):
         token.user.save()
         token.is_valid = False
         token.save()
+        login(request, user=token.user)
+        messages.success(request, "Akun Anda sudah aktif!")
         return redirect("home:home")
     else:
-        return HttpResponse("<h1>Activation link not valid!</h1>")
+        messages.error(
+            request, "Link activation sudah tidak valid, silahkan register ulang"
+        )
+        return redirect("accounts:signup")
 
 
 @login_required()

@@ -15,12 +15,12 @@
           </form>
         </div>
         <div class="card-footer text-muted text-center">
-          New to Django Boards? <a href="{% url 'accounts:signup' %}">Sign up</a>
+          Belum punya akun? <a href="{% url 'accounts:signup' %}">Daftar</a>
         </div>
       </div>
       <div class="text-center py-2">
         <small>
-          <a href="#" class="text-muted">Forgot your password?</a>
+          <a href="{% url 'accounts:password_reset' %}" class="text-muted">Lupa password?</a>
         </small>
       </div>
     </div>

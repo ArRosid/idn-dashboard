@@ -2,10 +2,7 @@
 {% block content %}
 
 
-    <h3>List Pendaftaran Belum Bayar</h3>
-    <a href="{% url 'course:export_pendaftar_belum_bayar' %}">
-        <button type="button" class="mt-2 btn btn-primary mb-2">Export</button>
-    </a>
+    <h3>List Peserta</h3>
     <table class="table">
   <thead>
     <tr>
@@ -14,16 +11,18 @@
       <th scope="col">Training</th>
       <th scope="col">Training Type</th>
       <th scope="col">Jadwal</th>
+      <th scope="col">No HP</th>
     </tr>
   </thead>
   <tbody>
-    {% for pendaftar in list_pendaftar %}
+    {% for pendaftar in peserta_bayar %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{ pendaftar.user.profile.name }}</td>
       <td>{{ pendaftar.training.name }}</td>
       <td>{{ pendaftar.get_training_type }}</td>
       <td>{{ pendaftar.scheddule }}</td>
+      <td>{{ pendaftar.user.profile.phone_number }}</td>
     </tr>
     {% endfor %}
   </tbody>

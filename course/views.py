@@ -6,11 +6,14 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.db.utils import IntegrityError
 from django.views import generic
+from django.conf import settings
+from django.utils import timezone
 from course.forms import (
     RegistrationFormAdd,
     PaymentConfirmForm,
     TrainingForm,
     SchedduleForm,
+    DiscountForm,
 )
 from course.models import (
     Registration,
@@ -19,10 +22,13 @@ from course.models import (
     MonthYearScheddule,
     DayScheddule,
     PaymentConfirm,
+    Discount,
 )
+from accounts.utils import SendEmail
 from course.choices import TrainingType
 import csv
 import io
+import os
 
 
 @login_required
@@ -33,13 +39,44 @@ def daftar_training(request):
             if form.is_valid():
                 reg = form.save(commit=False)
                 reg.user = request.user
+                harga_diskon = None
+
+                if reg.diskon_kode:
+                    diskon = Discount.objects.get(kode=reg.diskon_kode)
+                    if (
+                        timezone.now().date() <= diskon.end_date
+                        and reg.training_type == diskon.training_type
+                    ):
+                        harga_diskon = reg.training.price - (
+                            reg.training.price * diskon.persen / 100
+                        )
+                    else:
+                        raise Exception(
+                            "Diskon tidak berlaku untuk tipe training ini atau sudah berahir"
+                        )
+
                 reg.save()
+                data = {
+                    "name": reg.user.email,
+                    "training": reg.training.name,
+                    "training_type": reg.get_training_type(),
+                    "jadwal": f"{reg.scheddule.day.day}, {reg.month_year}",
+                    "harga_asli": "{:,}".format(reg.training.price),
+                    "harga_diskon": "{:,}".format(harga_diskon),
+                }
+                SendEmail(user=reg.user).panduan_pembayaran(data)
                 messages.success(
-                    request, "Pendaftaran berhasil, silahkan check email Anda!"
+                    request,
+                    "Pendaftaran berhasil, silahkan check email Anda untuk melihat Panduan Pembayaran",
                 )
                 return redirect("home:home")
         except IntegrityError:
             messages.error(request, "Anda sudah mendaftar training ini!")
+        except Discount.DoesNotExist:
+            messages.error(request, "Kode diskon tidak valid")
+        except Exception as e:
+            messages.error(request, e)
+
     else:
         form = RegistrationFormAdd()
 
@@ -71,7 +108,7 @@ def edit_pendaftaran(request, pk):
 def delete_registration(request, pk):
     reg = get_object_or_404(Registration, pk=pk)
     reg.delete()
-    messages.error(request, "Pendaftaran berhasil di hapus")
+    messages.success(request, "Pendaftaran berhasil di hapus")
     return redirect("home:home")
 
 
@@ -99,6 +136,18 @@ def list_jadwal(request):
     scheds = Scheddule.objects.all().order_by("-created_at")
     context = {"scheds": scheds}
     return render(request, "course/list_jadwal.html", context)
+
+
+@staff_member_required(login_url="accounts:login")
+def download_contoh_jadwal(request):
+    file = os.path.join(settings.BASE_DIR, "templates/master/master_import_jadwal.csv")
+    if os.path.exists(file):
+        with open(file, "rb") as fh:
+            response = HttpResponse(fh.read(), content_type="text/csv")
+            response["Content-Disposition"] = "inline; filename=" + os.path.basename(
+                file
+            )
+            return response
 
 
 @staff_member_required(login_url="accounts:login")
@@ -314,3 +363,48 @@ def export_pendaftar_belum_bayar(request):
         writer.writerow(row)
 
     return response
+
+
+@staff_member_required(login_url="accounts:login")
+def list_peserta(request, pk):
+    jadwal = Scheddule.objects.get(pk=pk)
+    all_peserta = Registration.objects.filter(Q(scheddule=jadwal))
+    peserta_bayar = all_peserta.filter(Q(status=2) | Q(status=3))
+    return render(request, "course/list_peserta.html", {"peserta_bayar": peserta_bayar})
+
+
+@staff_member_required(login_url="accounts:login")
+def list_diskon(request):
+    diskon = Discount.objects.all().order_by("-created_at")
+    return render(request, "course/list_diskon.html", {"diskon": diskon})
+
+
+@staff_member_required(login_url="accounts:login")
+def add_diskon(request):
+    if request.method == "POST":
+        form = DiscountForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Diskon berhasil ditambahkan")
+            return redirect("course:list_diskon")
+    else:
+        form = DiscountForm()
+
+    return render(request, "course/add_diskon.html", {"form": form})
+
+
+class UpdateDiskon(generic.UpdateView):
+    model = Discount
+    form_class = DiscountForm
+    template_name = "course/edit_diskon.html"
+
+    def get_success_url(self):
+        return reverse("course:list_diskon")
+
+
+@staff_member_required(login_url="acounts:login")
+def delete_diskon(request, pk):
+    diskon = get_object_or_404(Discount, pk=pk)
+    diskon.delete()
+    messages.error(request, "Diskon berhasil di hapus")
+    return redirect("course:list_diskon")

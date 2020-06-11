@@ -21,9 +21,10 @@ class Training(BaseModel):
     category = models.ForeignKey(TrainingCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     duration = models.PositiveSmallIntegerField()
+    price = models.PositiveIntegerField()
 
     class Meta:
-        unique_together = ("category", "name", "duration")
+        unique_together = ("category", "name", "duration", "price")
 
     def __str__(self):
         return self.name
@@ -84,6 +85,7 @@ class Registration(BaseModel):
         default=RegistrationPaymentStatus.not_paid,
     )
     is_retraining = models.BooleanField(default=False)
+    diskon_kode = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user} - {self.training}"
@@ -113,3 +115,16 @@ class PaymentConfirm(BaseModel):
 
     def __str__(self):
         return f"{self.user} - {self.registration.training}"
+
+
+class Discount(BaseModel):
+    persen = models.PositiveIntegerField()
+    kode = models.CharField(max_length=100, unique=True)
+    end_date = models.DateField()
+    training_type = models.PositiveSmallIntegerField(choices=TrainingType.choices)
+
+    def __str__(self):
+        return self.kode
+
+    def get_training_type(self):
+        return TrainingType.choices[self.training_type][1]

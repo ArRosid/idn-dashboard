@@ -7,6 +7,7 @@ from course.models import (
     Scheddule,
     DayScheddule,
     MonthYearScheddule,
+    Discount,
 )
 
 
@@ -17,7 +18,7 @@ class TrainingCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Training)
 class TrainingAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "duration")
+    list_display = ("name", "category", "duration", "price")
 
 
 @admin.register(Registration)
@@ -43,3 +44,8 @@ class DaySchedduleAdmin(admin.ModelAdmin):
 @admin.register(MonthYearScheddule)
 class MonthYearSchedduleAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Discount)
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ("persen", "kode", "end_date")

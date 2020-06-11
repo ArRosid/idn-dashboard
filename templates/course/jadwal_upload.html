@@ -2,6 +2,7 @@
 
 {% block content %}
     <h3 class="mb-3">Upload Jadwal</h3>
+
  <form action="{% url 'course:upload_jadwal' %}"
         method="post" 
         enctype="multipart/form-data" 
@@ -13,6 +14,7 @@
       <input type="submit"/>
     </div>
   </form>
+    <p>Download contoh: <a href="{% url 'course:download_contoh_jadwal' %}">file</a></p>
   {% if error_list %}
       <h4 class="mt-5">Jadwal yang tidak diimport: </h4>
   <table class="table">

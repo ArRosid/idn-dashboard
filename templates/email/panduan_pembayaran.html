@@ -65,11 +65,39 @@
                                     <td align="left" style="color: #888888; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 23px;" class="text_color">
                                         <div style="color: #333333; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; font-weight: 600; mso-line-height-rule: exactly; line-height: 23px;">
 
-                                            Hi {{ email }}, <br/><br>
-                                            <p>Anda melakukan request untuk reset password. Silahkan gunakan link berikut untuk reset password Anda</p>
-                                            <p>Jika Anda tidak melakukan request untuk reset password, abaikan email ini</p>
+                                            Hi {{ name }}, <br/><br>
+                                            <p>Terimakasih telah mendaftar training di IDN.ID dengan detail berikut.</p>
+                                            <table>
+                                                <tr>
+                                                    <td><b>Training</b></td>
+                                                    <td>{{ training }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Tipe Training</b></td>
+                                                    <td>{{ training_type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Jadwal</b></td>
+                                                    <td>{{ jadwal }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Harga</b></td>
+                                                    {% if harga_diskon %}
+                                                    <td><strike>Rp {{ harga_asli }}</strike> Rp {{ harga_diskon }}</td>
+                                                    {% else %}
+                                                    <td>Rp {{ harga_alsi }}</td>
+                                                    {% endif %}
+                                                </tr>
+                                            </table>
+
+                                            <p>Kirim pembayaran ke salah satu rekening berikut</p>
+                                            <ul>
+                                                <li>BCA 5435040460 an Deny Kurnia Nawangsari</li>
+                                                <li>Mandiri 1170000007724 an Deny Kurnia Nawangsari</li>
+                                            </ul>
+                                            <p>Setelah melakukan pembayaran, lakukan konfirmasi pembayaran dari Dahsboard IDN</p>
                                             <br><br>
-                                            {{ protocol }}://{{ domain }}{% url 'accounts:password_reset_confirm' uidb64=uid token=token %}
+
                                         </div>
                                     </td>
                                 </tr>
