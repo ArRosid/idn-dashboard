@@ -49,7 +49,7 @@ class SchedduleForm(forms.ModelForm):
 class TrainingForm(forms.ModelForm):
     class Meta:
         model = Training
-        fields = ("category", "name", "duration")
+        fields = ("category", "name", "duration", "price")
 
 
 class DiscountForm(forms.ModelForm):
