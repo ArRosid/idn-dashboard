@@ -25,6 +25,7 @@ def signup(request):
                 request,
                 "Akun Anda berhasil dibuat, silahkan check email untuk melakukan konfirmasi",
             )
+            return redirect("accounts:login")
 
     else:
         form = SignUpForm()
@@ -37,7 +38,7 @@ def activate_account(request, **kwargs):
         token = LinkToken.objects.get(key=key)
     except:
         token = None
-
+    print(token)
     if token is not None and token.is_valid:
         token.user.is_active = True
         token.user.save()

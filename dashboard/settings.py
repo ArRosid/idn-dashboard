@@ -125,12 +125,12 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 AUTH_USER_MODEL = "accounts.User"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_FORM = env.str("EMAIL_FORM")
 EMAIL_HOST = env.str("EMAIL_HOST")
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
-EMAIL_PORT = env.int("EMAIL_PORT")
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = env.int("EMAIL_PORT")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS")
 
 BASE_URL = env.str("BASE_URL")
 
