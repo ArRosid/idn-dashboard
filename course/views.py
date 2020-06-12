@@ -15,6 +15,7 @@ from course.forms import (
     SchedduleForm,
     DiscountForm,
     JadwalFileForm,
+    MaxPesertaForm,
 )
 from course.models import (
     Registration,
@@ -24,6 +25,7 @@ from course.models import (
     DayScheddule,
     PaymentConfirm,
     Discount,
+    MaxPeserta,
 )
 from accounts.utils import SendEmail
 from course.choices import TrainingType
@@ -40,7 +42,15 @@ def daftar_training(request):
                 reg = form.save(commit=False)
                 reg.user = request.user
                 harga_diskon = reg.training.price
-                if reg.scheddule.get_jml_peserta() >= settings.MAX_PESERTA:
+                try:
+                    max_peserta = MaxPeserta.objects.get(id=1)
+                except:
+                    max_peserta = None
+
+                if (
+                    max_peserta
+                    and reg.scheddule.get_jml_peserta() >= max_peserta.max_peserta
+                ):
                     raise Exception(
                         "Mohon maaf, Jadwal ini sudah Full, silahkan pilih jadwal lain"
                     )
@@ -455,3 +465,22 @@ def upload_jadwal(request):
             messages.success(request, "Jadwal berhasil di upload")
 
     return render(request, "course/jadwal_upload.html", {"error_list": error_list})
+
+
+@staff_member_required(login_url="accounts:login")
+def set_max_peserta(request):
+    try:
+        max_peserta = MaxPeserta.objects.get(id=1)
+    except:
+        max_peserta = MaxPeserta.objects.create(max_peserta=5)
+
+    if request.method == "POST":
+        form = MaxPesertaForm(request.POST, instance=max_peserta)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Max Peserta berhasil diupdate")
+            return redirect("course:set_max_peserta")
+    else:
+        form = MaxPesertaForm(instance=max_peserta)
+
+    return render(request, "course/set_max_peserta.html", {"form": form})
