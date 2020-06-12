@@ -40,6 +40,10 @@ def daftar_training(request):
                 reg = form.save(commit=False)
                 reg.user = request.user
                 harga_diskon = reg.training.price
+                if reg.scheddule.get_jml_peserta() >= settings.MAX_PESERTA:
+                    raise Exception(
+                        "Mohon maaf, Jadwal ini sudah Full, silahkan pilih jadwal lain"
+                    )
 
                 if reg.diskon_kode:
                     diskon = Discount.objects.get(kode=reg.diskon_kode)
