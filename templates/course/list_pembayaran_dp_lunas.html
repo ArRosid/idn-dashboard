@@ -26,7 +26,27 @@
       <td>{{ pembayaran.registration.get_training_type }}</td>
       <td>{{ pembayaran.registration.scheddule }}</td>
       <td><a target="_blank" href="{{ pembayaran.proof_of_payment.url }}">Bukti</a> </td>
-      <td>{{ pembayaran.get_status }}</td>
+      {% if pembayaran.status == 0 %}
+        <td>
+        <span class="badge badge-danger">{{ pembayaran.get_status }}</span>
+        </td>
+        {% elif pembayaran.status == 1 %}
+        <td>
+        <span class="badge badge-primary">{{ pembayaran.get_status }}</span>
+        </td>
+        {% elif pembayaran.status == 2 %}
+        <td>
+        <span class="badge badge-warning">{{ pembayaran.get_status }}</span>
+        </td>
+        {% elif pembayaran.status == 3 %}
+        <td>
+        <span class="badge badge-success">{{ pembayaran.get_status }}</span>
+        </td>
+        {% elif pembayaran.status == 4 %}
+        <td>
+        <span class="badge badge-dark">{{ pembayaran.get_status }}</span>
+        </td>
+        {% endif %}
 
       <td>
           <div class="btn-group">
