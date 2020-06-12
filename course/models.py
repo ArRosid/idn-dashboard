@@ -132,3 +132,7 @@ class Discount(BaseModel):
 
 class JadwalFile(BaseModel):
     file = models.FileField(upload_to="jadwal_file")
+
+
+class MaxPeserta(BaseModel):
+    max_peserta = models.PositiveIntegerField()

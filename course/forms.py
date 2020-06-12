@@ -9,6 +9,7 @@ from course.models import (
     Scheddule,
     Discount,
     JadwalFile,
+    MaxPeserta,
 )
 
 
@@ -64,3 +65,9 @@ class JadwalFileForm(forms.ModelForm):
     class Meta:
         model = JadwalFile
         fields = ("file",)
+
+
+class MaxPesertaForm(forms.ModelForm):
+    class Meta:
+        model = MaxPeserta
+        fields = ("max_peserta",)

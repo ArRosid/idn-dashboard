@@ -28,6 +28,7 @@ from course.views import (
     UpdateDiskon,
     delete_diskon,
     upload_jadwal,
+    set_max_peserta,
 )
 
 app_name = "course"
@@ -91,4 +92,5 @@ urlpatterns = [
     path("update_diskon/<int:pk>", UpdateDiskon.as_view(), name="update_diskon"),
     path("delete_diskon/<int:pk>", delete_diskon, name="delete_diskon"),
     path("upload_jadwal/", upload_jadwal, name="upload_jadwal"),
+    path("set_max_peserta/", set_max_peserta, name="set_max_peserta"),
 ]
