@@ -381,7 +381,8 @@ def upload_jadwal(request):
             os.remove(file.file.url.strip("/"))
             file.delete()
 
-            master_header = ["ï»¿training", "training_type", "month", "year", "day"]
+            #master_header = ["ï»¿training", "training_type", "month", "year", "day"]
+            master_header = ['\ufefftraining', 'training_type', 'month', 'year', 'day']
             header = content.pop(0)
             if header != master_header:
                 messages.error(
