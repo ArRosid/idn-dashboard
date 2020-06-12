@@ -128,6 +128,10 @@ def payment_confirm(request, registration_id):
             payment.save()
             reg.status = 1
             reg.save()
+            messages.success(
+                request,
+                "Terimakasih telah melakukan konfirmasi pembayaran. Admin kami akan segera menghubungi Anda via email maksimal 1x24 jam",
+            )
             return redirect("home:home")
     else:
         form = PaymentConfirmForm()
