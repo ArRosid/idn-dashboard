@@ -28,7 +28,6 @@ from course.models import (
 from accounts.utils import SendEmail
 from course.choices import TrainingType
 import csv
-import io
 import os
 
 
@@ -82,7 +81,10 @@ def daftar_training(request):
         form = RegistrationFormAdd()
 
     if not request.user.profile.is_valid():
-        messages.error(request, "Lengkapi profile anda sebelum mendaftar!")
+        messages.error(
+            request,
+            "Anda harus melengkap profile Anda sebelum mendaftar, <a href='accounts/profile/'>disini</a>",
+        )
         return redirect("home:home")
 
     context = {"form": form, "button": "Daftar Training"}
@@ -250,6 +252,13 @@ def konfirmasi_pembayaran_dp(request, pk):
     pembayaran.registration.save()
     pembayaran.status = 2
     pembayaran.save()
+    data = {
+        "name": pembayaran.user.email,
+        "training": pembayaran.registration.training.name,
+        "training_type": pembayaran.registration.get_training_type(),
+        "jadwal": f"{pembayaran.registration.scheddule.day.day}, {pembayaran.registration.month_year}",
+    }
+    SendEmail(user=pembayaran.user).konfirmasi_pembayaran_dp(data)
     return redirect("course:list_pembayaran")
 
 
@@ -260,6 +269,13 @@ def konfirmasi_pembayaran_lunas(request, pk):
     pembayaran.registration.save()
     pembayaran.status = 3
     pembayaran.save()
+    data = {
+        "name": pembayaran.user.email,
+        "training": pembayaran.registration.training.name,
+        "training_type": pembayaran.registration.get_training_type(),
+        "jadwal": f"{pembayaran.registration.scheddule.day.day}, {pembayaran.registration.month_year}",
+    }
+    SendEmail(user=pembayaran.user).konfirmasi_pembayaran_lunas(data)
     return redirect("course:list_pembayaran_dp_lunas")
 
 
@@ -280,6 +296,13 @@ def tolak_pembayaran(request, pk):
     pembayaran.registration.save()
     pembayaran.status = 4
     pembayaran.save()
+    data = {
+        "name": pembayaran.user.email,
+        "training": pembayaran.registration.training.name,
+        "training_type": pembayaran.registration.get_training_type(),
+        "jadwal": f"{pembayaran.registration.scheddule.day.day}, {pembayaran.registration.month_year}",
+    }
+    SendEmail(user=pembayaran.user).konfirmasi_pembayaran_tolak(data)
     return redirect("course:list_pembayaran_dp_lunas")
 
 
@@ -293,15 +316,24 @@ def list_pendaftar_belum_bayar(request):
 
 @staff_member_required(login_url="accounts:login")
 def export_pendaftar_belum_bayar(request):
+    if "last" in request.GET:
+        date = timezone.now() - timezone.timedelta(days=int(request.GET.get("last")))
+        list_pendaftar = Registration.objects.filter(
+            Q(status=0) & Q(created_at__gte=date)
+        ).order_by("-created_at")
+    else:
+        list_pendaftar = Registration.objects.filter(status=0).order_by("-created_at")
+
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="pendaftar_belum_bayar.csv"'
 
     writer = csv.writer(response, delimiter=";")
 
-    writer.writerow(["User", "Training", "Training Type", "Jadwal", "No HP", "Email"])
+    writer.writerow(
+        ["User", "Training", "Training Type", "Jadwal", "No HP", "Email", "Created At"]
+    )
 
     rows = []
-    list_pendaftar = Registration.objects.filter(status=0)
     for pendaftar in list_pendaftar:
         col = []
         col.append(pendaftar.user.profile.name)
@@ -312,6 +344,7 @@ def export_pendaftar_belum_bayar(request):
         )
         col.append(pendaftar.user.profile.phone_number)
         col.append(pendaftar.user.email)
+        col.append(pendaftar.created_at)
         rows.append(col)
 
     for row in rows:
