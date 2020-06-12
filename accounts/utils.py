@@ -35,3 +35,42 @@ class SendEmail:
             html_message=html_message,
             fail_silently=False,
         )
+
+    def konfirmasi_pembayaran_dp(self, data):
+        html_message = render_to_string("email/konfirmasi_pembayaran_dp.html", data)
+        plain_message = strip_tags(html_message)
+
+        send_mail(
+            subject="Konfirmasi Pembayaran Training IDN.ID",
+            message=plain_message,
+            from_email=settings.EMAIL_FORM,
+            recipient_list=[self.user.email,],
+            html_message=html_message,
+            fail_silently=False,
+        )
+
+    def konfirmasi_pembayaran_lunas(self, data):
+        html_message = render_to_string("email/konfirmasi_pembayaran_lunas.html", data)
+        plain_message = strip_tags(html_message)
+
+        send_mail(
+            subject="Konfirmasi Pembayaran Training IDN.ID",
+            message=plain_message,
+            from_email=settings.EMAIL_FORM,
+            recipient_list=[self.user.email,],
+            html_message=html_message,
+            fail_silently=False,
+        )
+
+    def konfirmasi_pembayaran_tolak(self, data):
+        html_message = render_to_string("email/konfirmasi_pembayaran_tolak.html", data)
+        plain_message = strip_tags(html_message)
+
+        send_mail(
+            subject="Konfirmasi Pembayaran Training IDN.ID",
+            message=plain_message,
+            from_email=settings.EMAIL_FORM,
+            recipient_list=[self.user.email,],
+            html_message=html_message,
+            fail_silently=False,
+        )

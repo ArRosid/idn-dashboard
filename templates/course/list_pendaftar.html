@@ -6,6 +6,12 @@
     <a href="{% url 'course:export_pendaftar_belum_bayar' %}">
         <button type="button" class="mt-2 btn btn-primary mb-2">Export</button>
     </a>
+    <a href="{% url 'course:export_pendaftar_belum_bayar' %}?last=3">
+        <button type="button" class="mt-2 btn btn-primary mb-2">Export Last 3</button>
+    </a>
+    <a href="{% url 'course:export_pendaftar_belum_bayar' %}?last=7">
+        <button type="button" class="mt-2 btn btn-primary mb-2">Export Last 7</button>
+    </a>
     <table class="table" id="table_id">
   <thead>
     <tr>
@@ -14,6 +20,7 @@
       <th scope="col">Training</th>
       <th scope="col">Training Type</th>
       <th scope="col">Jadwal</th>
+      <th scope="col">Created At</th>
     </tr>
   </thead>
   <tbody>
@@ -24,6 +31,7 @@
       <td>{{ pendaftar.training.name }}</td>
       <td>{{ pendaftar.get_training_type }}</td>
       <td>{{ pendaftar.scheddule }}</td>
+      <td>{{ pendaftar.created_at }}</td>
     </tr>
     {% endfor %}
   </tbody>
