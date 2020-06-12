@@ -39,7 +39,7 @@ def daftar_training(request):
             if form.is_valid():
                 reg = form.save(commit=False)
                 reg.user = request.user
-                harga_diskon = None
+                harga_diskon = reg.training.price
 
                 if reg.diskon_kode:
                     diskon = Discount.objects.get(kode=reg.diskon_kode)

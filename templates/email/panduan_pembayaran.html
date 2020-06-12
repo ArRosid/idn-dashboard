@@ -82,7 +82,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td><b>Harga</b></td>
-                                                    {% if harga_diskon %}
+                                                    {% if harga_diskon != harga_asli %}
                                                     <td><strike>Rp {{ harga_asli }}</strike> Rp {{ harga_diskon }}</td>
                                                     {% else %}
                                                     <td>Rp {{ harga_alsi }}</td>
