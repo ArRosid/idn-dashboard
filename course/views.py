@@ -14,6 +14,7 @@ from course.forms import (
     TrainingForm,
     SchedduleForm,
     DiscountForm,
+    JadwalFileForm,
 )
 from course.models import (
     Registration,
@@ -148,52 +149,6 @@ def download_contoh_jadwal(request):
                 file
             )
             return response
-
-
-@staff_member_required(login_url="accounts:login")
-def jadwal_upload(request):
-    error_list = []
-    if request.method == "POST":
-        csv_file = request.FILES["file"].file
-        csv_file = io.TextIOWrapper(csv_file)  # python 3 only
-        dialect = csv.Sniffer().sniff(csv_file.read(), delimiters=";,")
-        csv_file.seek(0)
-
-        content = list(csv.reader(csv_file, dialect))
-        master_header = ["ï»¿training", "training_type", "month", "year", "day"]
-        header = content.pop(0)
-        if header != master_header:
-            messages.error(
-                request, "Format file tidak sesuai, silahkan download contohnya"
-            )
-            return redirect("course:upload_jadwal")
-
-        for row in content:
-            try:
-                training = Training.objects.get(name=row[0])
-                training_type = TrainingType.dict_choices[row[1]]
-                month_year = MonthYearScheddule.objects.get(
-                    month=int(row[2]), year=int(row[3])
-                )
-                day, created = DayScheddule.objects.get_or_create(
-                    month_year=month_year, day=row[4]
-                )
-                Scheddule.objects.create(
-                    training=training,
-                    training_type=training_type,
-                    month_year=month_year,
-                    day=day,
-                )
-            except IntegrityError:
-                row.append("jadwal tersebut sudah ada")
-                error_list.append(row)
-            except Exception as e:
-                row.append(e)
-                error_list.append(row)
-
-        messages.success(request, "Jadwal berhasil di upload")
-
-    return render(request, "course/jadwal_upload.html", {"error_list": error_list})
 
 
 class AddJadwal(generic.CreateView):
@@ -408,3 +363,54 @@ def delete_diskon(request, pk):
     diskon.delete()
     messages.error(request, "Diskon berhasil di hapus")
     return redirect("course:list_diskon")
+
+
+@staff_member_required(login_url="accounts:login")
+def upload_jadwal(request):
+    error_list = []
+
+    if request.method == "POST":
+        form = JadwalFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.save()
+            csv_file = open(file.file.url.strip("/"), "r")
+            content = list(csv.reader(csv_file, delimiter=";"))
+            csv_file.close()
+
+            # hapus file & model instance
+            os.remove(file.file.url.strip("/"))
+            file.delete()
+
+            master_header = ["ï»¿training", "training_type", "month", "year", "day"]
+            header = content.pop(0)
+            if header != master_header:
+                messages.error(
+                    request, "Format file tidak sesuai, silahkan download contohnya"
+                )
+                return redirect("course:upload_jadwal")
+
+            for row in content:
+                try:
+                    training = Training.objects.get(name=row[0])
+                    training_type = TrainingType.dict_choices[row[1]]
+                    month_year = MonthYearScheddule.objects.get(
+                        month=int(row[2]), year=int(row[3])
+                    )
+                    day, created = DayScheddule.objects.get_or_create(
+                        month_year=month_year, day=row[4]
+                    )
+                    Scheddule.objects.create(
+                        training=training,
+                        training_type=training_type,
+                        month_year=month_year,
+                        day=day,
+                    )
+                except IntegrityError:
+                    row.append("jadwal tersebut sudah ada")
+                    error_list.append(row)
+                except Exception as e:
+                    row.append(e)
+                    error_list.append(row)
+            messages.success(request, "Jadwal berhasil di upload")
+
+    return render(request, "course/jadwal_upload.html", {"error_list": error_list})

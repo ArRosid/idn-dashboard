@@ -6,7 +6,6 @@ from course.views import (
     payment_confirm,
     list_jadwal,
     download_contoh_jadwal,
-    jadwal_upload,
     AddJadwal,
     UpdateJadwal,
     delete_jadwal,
@@ -28,6 +27,7 @@ from course.views import (
     add_diskon,
     UpdateDiskon,
     delete_diskon,
+    upload_jadwal,
 )
 
 app_name = "course"
@@ -45,7 +45,6 @@ urlpatterns = [
     path(
         "download_contoh_jadwal/", download_contoh_jadwal, name="download_contoh_jadwal"
     ),
-    path("upload_jadwal/", jadwal_upload, name="upload_jadwal"),
     path("add_jadwal/", AddJadwal.as_view(), name="add_jadwal"),
     path("update_jadwal/<int:pk>/", UpdateJadwal.as_view(), name="update_jadwal"),
     path("delete_jadwal/<int:pk>/", delete_jadwal, name="delete_jadwal"),
@@ -91,4 +90,5 @@ urlpatterns = [
     path("add_diskon/", add_diskon, name="add_diskon"),
     path("update_diskon/<int:pk>", UpdateDiskon.as_view(), name="update_diskon"),
     path("delete_diskon/<int:pk>", delete_diskon, name="delete_diskon"),
+    path("upload_jadwal/", upload_jadwal, name="upload_jadwal"),
 ]

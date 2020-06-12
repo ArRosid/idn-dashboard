@@ -8,6 +8,7 @@ from course.models import (
     DayScheddule,
     MonthYearScheddule,
     Discount,
+    JadwalFile,
 )
 
 
@@ -49,3 +50,8 @@ class MonthYearSchedduleAdmin(admin.ModelAdmin):
 @admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ("persen", "kode", "end_date")
+
+
+@admin.register(JadwalFile)
+class JadwalFileAdmin(admin.ModelAdmin):
+    pass

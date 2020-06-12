@@ -128,3 +128,7 @@ class Discount(BaseModel):
 
     def get_training_type(self):
         return TrainingType.choices[self.training_type][1]
+
+
+class JadwalFile(BaseModel):
+    file = models.FileField(upload_to="jadwal_file")

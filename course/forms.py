@@ -8,6 +8,7 @@ from course.models import (
     Training,
     Scheddule,
     Discount,
+    JadwalFile,
 )
 
 
@@ -57,3 +58,9 @@ class DiscountForm(forms.ModelForm):
         model = Discount
         fields = ("kode", "persen", "end_date", "training_type")
         widgets = {"end_date": forms.TextInput(attrs={"placeholder": "YYYY-MM-DD"})}
+
+
+class JadwalFileForm(forms.ModelForm):
+    class Meta:
+        model = JadwalFile
+        fields = ("file",)
