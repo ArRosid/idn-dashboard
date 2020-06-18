@@ -66,6 +66,8 @@
 
         {% if user.is_staff %}
             {% include 'includes/sidebar_admin.html' %}
+        {% else %}
+            {% include 'includes/sidebar_user.html' %}
         {% endif %}
 
       <!-- Sidebar Toggler (Sidebar) -->

@@ -3,7 +3,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from core.models import BaseModel
 from accounts.managers import UserManager
-from accounts.choices import LinkModelUsedFor
+from accounts.choices import LinkModelUsedFor, MengetahuiIDN
 
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
@@ -38,10 +38,14 @@ class LinkToken(models.Model):
 class Profile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=True, blank=True)
+    ttl = models.CharField(max_length=100, null=True, blank=True)
     company = models.CharField(max_length=100, null=True, blank=True)
+    jabatan = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
-    facebook = models.CharField(max_length=100, null=True, blank=True)
+    mengetahui_idn_dari = models.CharField(
+        max_length=100, null=True, blank=True, choices=MengetahuiIDN.choices
+    )
 
     def __str__(self):
         return f"{self.user}"

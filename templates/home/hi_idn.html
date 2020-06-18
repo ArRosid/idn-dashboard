@@ -1,13 +1,11 @@
 {% extends 'accounts/base_account.html' %}
 
-
 {% block content %}
   <div class="row justify-content-center">
     <div class="col-lg-4 col-md-6 col-sm-8">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Reset Password</h3>
-          <p>Masukkan email Anda, kami akan mengirimkan link untuk melakukan reset password.</p>
+          <h3 class="card-title">Hi IDN</h3>
           <form method="post" novalidate>
             {% csrf_token %}
             {% include 'includes/form.html' %}
@@ -15,6 +13,6 @@
           </form>
         </div>
       </div>
-    </div>
+  </div>
   </div>
 {% endblock %}

@@ -14,4 +14,21 @@ class SignUpForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ("name", "company", "address", "phone_number", "facebook")
+        fields = (
+            "name",
+            "ttl",
+            "company",
+            "jabatan",
+            "address",
+            "phone_number",
+            "mengetahui_idn_dari",
+        )
+        labels = {
+            "name": "Nama",
+            "ttl": "Tempat Tanggal Lahir",
+            "company": "Perusahaan",
+            "jabatan": "Jabatan",
+            "address": "Alamat",
+            "phone_number": "No HP (WA)",
+            "mengetahui_idn_dari": "Mengetahui IDN dari Mana?",
+        }

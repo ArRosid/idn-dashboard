@@ -124,8 +124,14 @@ def edit_pendaftaran(request, pk):
 @login_required
 def delete_registration(request, pk):
     reg = get_object_or_404(Registration, pk=pk)
-    reg.delete()
-    messages.success(request, "Pendaftaran berhasil di hapus")
+    if reg.status != 0:
+        messages.error(
+            request,
+            "Anda tidak bisa menghapus pendaftaran setelah melakukan pembayaran",
+        )
+    else:
+        reg.delete()
+        messages.success(request, "Pendaftaran berhasil di hapus")
     return redirect("home:home")
 
 

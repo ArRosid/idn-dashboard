@@ -150,3 +150,6 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 MAX_PESERTA = env.int("MAX_PESERTA")
+WA_ADMIN = env.str("WA_ADMIN")
+WA_URL = "https://api.whatsapp.com/send?phone="
+WA_HI = "Hi Admin,%0A%0A Perkenalkan saya {}, ingin bertanya sesuatu%0A%0A"
