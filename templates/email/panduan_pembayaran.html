@@ -1,205 +1,38 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:v="urn:schemas-microsoft-com:vml">
+{% extends "email/base_email.html" %}
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
-    <!--[if !mso]--><!-- -->
-    <!-- <![endif]-->
+{% block content %}
+Hi {{ name }}, <br/><br>
+<p>Terimakasih telah mendaftar training di IDN.ID dengan detail berikut.</p>
+<table>
+    <tr>
+        <td><b>Training</b></td>
+        <td>{{ training }}</td>
+    </tr>
+    <tr>
+        <td><b>Tipe Training</b></td>
+        <td>{{ training_type }}</td>
+    </tr>
+    <tr>
+        <td><b>Jadwal</b></td>
+        <td>{{ jadwal }}</td>
+    </tr>
+    <tr>
+        <td><b>Harga</b></td>
+        {% if harga_diskon != harga_asli %}
+        <td><strike>Rp {{ harga_asli }}</strike> Rp {{ harga_diskon }}</td>
+        {% else %}
+        <td>Rp {{ harga_asli }}</td>
+        {% endif %}
+    </tr>
+</table>
 
-    <title>Aktifasi akun IDN.ID</title>
+<p>Bisa melakukan pembayaran secara full maupun DP. Untuk DP minimal Rp 500.000
+dan pelunasan maksimal H-1 training.</p>
+<p>Kirim pembayaran ke salah satu rekening berikut</p>
+<ul>
+    <li>BCA 5435040460 an Deny Kurnia Nawangsari</li>
+    <li>Mandiri 1170000007724 an Deny Kurnia Nawangsari</li>
+</ul>
+<p>Setelah melakukan pembayaran, lakukan konfirmasi pembayaran dari Dahsboard IDN</p>
 
-    <style type="text/css">
-        body {
-            width: 100%;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-            -webkit-font-smoothing: antialiased;
-            mso-margin-top-alt: 0px;
-            mso-margin-bottom-alt: 0px;
-            mso-padding-alt: 0px 0px 0px 0px;
-        }
-
-    </style>
-    <!-- [if gte mso 9]><style type=”text/css”>
-        body {
-        font-family: arial, sans-serif!important;
-        }
-        </style>
-    <![endif]-->
-</head>
-
-
-<body class="respond" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-    <table border="0" width="100%" cellpadding="0" cellspacing="0" bgcolor="ffffff" class="bg_color">
-        <tr class="hide">
-            <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td height="40" style="font-size: 40px; line-height: 40px;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td height="60" style="border-top: 1px solid #e0e0e0;font-size: 60px; line-height: 60px;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td align="center">
-                <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590 bg_color">
-                    <tr>
-                        <td>
-                            <table border="0" width="300" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
-                                <tr>
-                                    <!-- logo -->
-                                    <td align="left">
-                                        <center>
-                                            <a target="_blank" href="https://idn.id"><img width="120" src="https://idn.naav.net/wp-content/uploads/2020/05/cropped-logo-idn-baru-samping-merah-e1589263653208-1.png" alt="" /></a>
-                                        </center>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
-                                </tr>
-
-                                <tr>
-                                    <td align="left" style="color: #888888; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 23px;" class="text_color">
-                                        <div style="color: #333333; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; font-weight: 600; mso-line-height-rule: exactly; line-height: 23px;">
-
-                                            Hi {{ name }}, <br/><br>
-                                            <p>Terimakasih telah mendaftar training di IDN.ID dengan detail berikut.</p>
-                                            <table>
-                                                <tr>
-                                                    <td><b>Training</b></td>
-                                                    <td>{{ training }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Tipe Training</b></td>
-                                                    <td>{{ training_type }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Jadwal</b></td>
-                                                    <td>{{ jadwal }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Harga</b></td>
-                                                    {% if harga_diskon != harga_asli %}
-                                                    <td><strike>Rp {{ harga_asli }}</strike> Rp {{ harga_diskon }}</td>
-                                                    {% else %}
-                                                    <td>Rp {{ harga_asli }}</td>
-                                                    {% endif %}
-                                                </tr>
-                                            </table>
-
-                                            <p>Bisa melakukan pembayaran secara full maupun DP. Untuk DP minimal Rp 500.000
-                                            dan pelunasan maksimal H-1 training.</p>
-                                            <p>Kirim pembayaran ke salah satu rekening berikut</p>
-                                            <ul>
-                                                <li>BCA 5435040460 an Deny Kurnia Nawangsari</li>
-                                                <li>Mandiri 1170000007724 an Deny Kurnia Nawangsari</li>
-                                            </ul>
-                                            <p>Setelah melakukan pembayaran, lakukan konfirmasi pembayaran dari Dahsboard IDN</p>
-                                            <br><br>
-                                            <p>Best Regards,<br>IDN Team</p>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </table>
-
-                            <table border="0" width="2" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
-                                <tr>
-                                    <td width="2" height="10" style="font-size: 10px; line-height: 10px;"></td>
-                                </tr>
-                            </table>
-
-                            <table border="0" width="200" align="right" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
-
-                                <tr>
-                                    <td class="hide" height="45" style="font-size: 45px; line-height: 45px;">&nbsp;</td>
-                                </tr>
-
-
-
-                                <tr>
-                                    <td height="15" style="font-size: 15px; line-height: 15px;">&nbsp;</td>
-                                </tr>
-
-                                <tr>
-                                </tr>
-
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-            <td height="60" style="font-size: 60px; line-height: 60px;">&nbsp;</td>
-        </tr>
-
-    </table>
-    <!-- end section -->
-
-    <!-- footer ====== -->
-    <table border="0" width="100%" cellpadding="0" cellspacing="0" bgcolor="f4f4f4">
-
-        <tr>
-            <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
-        </tr>
-
-        <tr>
-            <td align="center">
-
-                <table border="0" align="center" width="590" cellpadding="0" cellspacing="0" class="container590">
-
-                    <tr>
-                        <td>
-                            <table border="0" align="left" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
-                                <tr>
-                                    <td align="left" style="color: #aaaaaa; font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;">
-                                        <div style="line-height: 24px;">
-
-                                            <span style="color: #333333;">www.idn.id</span>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table border="0" align="left" width="5" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
-                                <tr>
-                                    <td height="20" width="5" style="font-size: 20px; line-height: 20px;">&nbsp;</td>
-                                </tr>
-                            </table>
-
-                            <table border="0" align="right" cellpadding="0" cellspacing="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="container590">
-
-                                <tr>
-                                    <td align="center">
-                                        <table align="center" border="0" cellpadding="0" cellspacing="0">
-                                            <tr>
-
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                            </table>
-                        </td>
-                    </tr>
-
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-            <td height="25" style="font-size: 25px; line-height: 25px;">&nbsp;</td>
-        </tr>
-
-    </table>
-    <!-- end footer ====== -->
-
-</body>
-
-</html>
+{% endblock %}

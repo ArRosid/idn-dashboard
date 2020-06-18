@@ -1,3 +1,7 @@
 from django.contrib import admin
+from home.models import HiIDN
 
-# Register your models here.
+
+@admin.register(HiIDN)
+class HiIDNAdmin(admin.ModelAdmin):
+    list_display = ("nama", "pertanyaan")

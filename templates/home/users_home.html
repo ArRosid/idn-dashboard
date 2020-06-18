@@ -42,17 +42,25 @@
         </td>
         {% endif %}
       <td>
+            {% if reg.status == 0 %}
+
           <div class="btn-group">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Action
           </button>
           <div class="dropdown-menu">
-              <a class="dropdown-item" href="{% url 'course:edit_pendaftaran' reg.id %}">Edit</a>
+{#              <a class="dropdown-item" href="{% url 'course:edit_pendaftaran' reg.id %}">Edit</a>#}
               <a class="dropdown-item" href="{% url 'course:payment_confirm' reg.id %}">Konfirmasi Pembayaran</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ reg.id }}">Delete</a>
           </div>
         </div>
+            {% else %}
+                <button disabled type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Action
+              </button>
+            {% endif %}
+
       </td>
 
     </tr>

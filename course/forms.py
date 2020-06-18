@@ -14,9 +14,15 @@ from course.models import (
 
 
 class RegistrationFormAdd(forms.ModelForm):
-    training_category = forms.ModelChoiceField(queryset=TrainingCategory.objects.all())
-    training_type = forms.CharField(widget=forms.Select(choices=TrainingType.choices))
-    month_year = forms.ModelChoiceField(queryset=MonthYearScheddule.objects.all())
+    training_category = forms.ModelChoiceField(
+        queryset=TrainingCategory.objects.all(), label="Kategori Training"
+    )
+    training_type = forms.CharField(
+        widget=forms.Select(choices=TrainingType.choices), label="Tipe Training"
+    )
+    month_year = forms.ModelChoiceField(
+        queryset=MonthYearScheddule.objects.all(), label="Bulan"
+    )
 
     class Meta:
         model = Registration
@@ -28,6 +34,11 @@ class RegistrationFormAdd(forms.ModelForm):
             "scheddule",
             "diskon_kode",
         )
+        labels = {
+            "training": "Training",
+            "scheddule": "Jadwal",
+            "diskon_kode": "Kode Diskon",
+        }
 
 
 class RegistrationFormUpdate(forms.ModelForm):
@@ -40,6 +51,7 @@ class PaymentConfirmForm(forms.ModelForm):
     class Meta:
         model = PaymentConfirm
         fields = ("amount", "proof_of_payment")
+        labels = {"amount": "Jumlah Transfer", "proof_of_payment": "Bukti Pembayaran"}
 
 
 class SchedduleForm(forms.ModelForm):
