@@ -16,7 +16,7 @@ def home(request):
 
 
 def hi_idn(request):
-    if not request.user.profile.is_valid():
+    if request.user.is_authenticated and not request.user.profile.is_valid():
         messages.error(
             request,
             "Anda harus melengkap profile Anda sebelum menghubungi admin, <a href='accounts/profile/'>disini</a>",
