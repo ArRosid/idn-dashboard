@@ -382,7 +382,11 @@ def list_peserta(request, pk):
     jadwal = Scheddule.objects.get(pk=pk)
     all_peserta = Registration.objects.filter(Q(scheddule=jadwal))
     peserta_bayar = all_peserta.filter(Q(status=2) | Q(status=3))
-    return render(request, "course/list_peserta.html", {"peserta_bayar": peserta_bayar})
+    return render(
+        request,
+        "course/list_peserta.html",
+        {"jadwal": jadwal, "peserta_bayar": peserta_bayar},
+    )
 
 
 @staff_member_required(login_url="accounts:login")
