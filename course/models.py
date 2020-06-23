@@ -113,6 +113,9 @@ class PaymentConfirm(BaseModel):
     def get_status(self):
         return RegistrationPaymentStatus.choices[self.status][1]
 
+    def get_amount(self):
+        return "{:,}".format(self.amount)
+
     def __str__(self):
         return f"{self.user} - {self.registration.training}"
 
