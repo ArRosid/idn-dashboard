@@ -5,6 +5,7 @@ from course.views import (
     edit_pendaftaran,
     payment_confirm,
     list_jadwal,
+    list_jadwal_online,
     download_contoh_jadwal,
     AddJadwal,
     UpdateJadwal,
@@ -43,6 +44,7 @@ urlpatterns = [
         name="payment_confirm",
     ),
     path("list_jadwal/", list_jadwal, name="list_jadwal"),
+    path("list_jadwal_online/", list_jadwal_online, name="list_jadwal_online"),
     path(
         "download_contoh_jadwal/", download_contoh_jadwal, name="download_contoh_jadwal"
     ),

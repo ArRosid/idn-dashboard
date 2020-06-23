@@ -13,6 +13,7 @@
       <th scope="col">Jadwal</th>
       <th scope="col">Email</th>
       <th scope="col">No HP</th>
+      <th scope="col">Alamat</th>
     </tr>
   </thead>
   <tbody>
@@ -25,6 +26,7 @@
       <td>{{ pendaftar.scheddule }}</td>
       <td>{{ pendaftar.user.email }}</td>
       <td>{{ pendaftar.user.profile.phone_number }}</td>
+      <td>{{ pendaftar.user.profile.address }}</td>
     </tr>
     {% endfor %}
   </tbody>

@@ -160,8 +160,15 @@ def payment_confirm(request, registration_id):
 
 @staff_member_required(login_url="accounts:login")
 def list_jadwal(request):
-    scheds = Scheddule.objects.all().order_by("-created_at")
-    context = {"scheds": scheds}
+    scheds = Scheddule.objects.filter(training_type=0).order_by("-created_at")
+    context = {"scheds": scheds, "tipe": "Training Offline"}
+    return render(request, "course/list_jadwal.html", context)
+
+
+@staff_member_required(login_url="accounts:login")
+def list_jadwal_online(request):
+    scheds = Scheddule.objects.filter(training_type=1).order_by("-created_at")
+    context = {"scheds": scheds, "tipe": "Training Online"}
     return render(request, "course/list_jadwal.html", context)
 
 
