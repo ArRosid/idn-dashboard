@@ -2,6 +2,21 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.utils.html import strip_tags
+from accounts.models import Profile
+import random
+import string
+
+
+def randomStringAffiliateID(stringLength=8):
+    letters = "".join(
+        random.choice(string.ascii_lowercase) for i in range(stringLength)
+    )
+    while True:
+        try:
+            Profile.objects.get(affiliate_id=letters)
+        except:
+            break
+    return letters
 
 
 class SendEmail:

@@ -9,7 +9,7 @@ from django.contrib.auth.views import (
     PasswordChangeView,
     PasswordChangeDoneView,
 )
-from accounts.views import signup, activate_account, profile
+from accounts.views import signup, activate_account, profile, affiliate_view
 
 app_name = "accounts"
 
@@ -69,4 +69,5 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("profile/", profile, name="profile"),
+    path("affiliate/", affiliate_view, name="affiliate"),
 ]

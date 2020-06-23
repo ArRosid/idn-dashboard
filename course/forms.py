@@ -33,11 +33,13 @@ class RegistrationFormAdd(forms.ModelForm):
             "month_year",
             "scheddule",
             "diskon_kode",
+            "affiliate_kode",
         )
         labels = {
             "training": "Training",
             "scheddule": "Jadwal",
             "diskon_kode": "Kode Diskon",
+            "affiliate_kode": "Kode Affiliate",
         }
 
 

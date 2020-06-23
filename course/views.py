@@ -28,6 +28,7 @@ from course.models import (
     MaxPeserta,
 )
 from accounts.utils import SendEmail
+from accounts.models import Profile
 from course.choices import TrainingType
 import csv
 import os
@@ -55,6 +56,7 @@ def daftar_training(request):
                         "Mohon maaf, Jadwal ini sudah Full, silahkan pilih jadwal lain"
                     )
 
+                # if they use diskon kode
                 if reg.diskon_kode:
                     diskon = Discount.objects.get(kode=reg.diskon_kode)
                     if (
@@ -68,6 +70,12 @@ def daftar_training(request):
                         raise Exception(
                             "Diskon tidak berlaku untuk tipe training ini atau sudah berahir"
                         )
+
+                # if they use affiliate kode, decrease harga diskon 5% from
+                if reg.affiliate_kode:
+                    up_user = Profile.objects.get(affiliate_id=reg.affiliate_kode)
+                    harga_diskon = harga_diskon - (reg.training.price * 5 / 100)
+                    up_user.affiliate_point = up_user.affiliate_point + 200
 
                 reg.save()
                 data = {
@@ -88,6 +96,8 @@ def daftar_training(request):
             messages.error(request, "Anda sudah mendaftar training ini!")
         except Discount.DoesNotExist:
             messages.error(request, "Kode diskon tidak valid")
+        except Profile.DoesNotExist:
+            messages.error(request, "Kode Affiliate tidak valid")
         except Exception as e:
             messages.error(request, e)
 

@@ -46,6 +46,8 @@ class Profile(BaseModel):
     mengetahui_idn_dari = models.CharField(
         max_length=100, null=True, blank=True, choices=MengetahuiIDN.choices
     )
+    affiliate_id = models.CharField(max_length=20, null=True, blank=True)
+    affiliate_point = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.user}"

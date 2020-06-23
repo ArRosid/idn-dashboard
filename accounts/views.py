@@ -6,7 +6,8 @@ from django.contrib.auth import login
 from accounts.forms import SignUpForm, ProfileForm
 from accounts.tokens import token_generator
 from accounts.utils import SendEmail
-from accounts.models import LinkToken
+from accounts.models import LinkToken, Profile
+from course.models import Registration
 
 
 def signup(request):
@@ -65,3 +66,19 @@ def profile(request):
     else:
         form = ProfileForm(instance=request.user.profile)
     return render(request, "accounts/update_profile.html", {"form": form})
+
+
+@login_required
+def affiliate_view(request):
+    affiliate_id = request.user.profile.affiliate_id
+    affiliate_point = request.user.profile.affiliate_point
+    my_affiliate = Registration.objects.filter(affiliate_kode=affiliate_id)
+    return render(
+        request,
+        "accounts/affiliate_list.html",
+        {
+            "affiliate_id": affiliate_id,
+            "affiliate_point": affiliate_point,
+            "my_affiliate": my_affiliate,
+        },
+    )
