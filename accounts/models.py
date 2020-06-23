@@ -56,3 +56,17 @@ class Profile(BaseModel):
             if value is None:
                 return False
         return True
+
+    def get_wa_link(self):
+        if self.phone_number.startswith("0"):
+            return "https://wa.me/62" + self.phone_number[1:].replace(" ", "").replace(
+                "-", ""
+            )
+        if self.phone_number.startswith("+"):
+            return "https://wa.me/" + self.phone_number[1:].replace(" ", "").replace(
+                "-", ""
+            )
+        if self.phone_number.startswith("6"):
+            return "https://wa.me/" + self.phone_number.replace(" ", "").replace(
+                "-", ""
+            )

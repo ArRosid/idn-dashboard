@@ -25,7 +25,7 @@
       <td>{{ pendaftar.get_training_type }}</td>
       <td>{{ pendaftar.scheddule }}</td>
       <td>{{ pendaftar.user.email }}</td>
-      <td>{{ pendaftar.user.profile.phone_number }}</td>
+      <td><a href="{{ pendaftar.user.profile.get_wa_link }}" target="_blank">  {{ pendaftar.user.profile.phone_number }}</a></td>
       <td>{{ pendaftar.user.profile.address }}</td>
     </tr>
     {% endfor %}
