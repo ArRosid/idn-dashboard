@@ -70,3 +70,17 @@ class Profile(BaseModel):
             return "https://wa.me/" + self.phone_number.replace(" ", "").replace(
                 "-", ""
             )
+
+    def get_wa_send_link(self):
+        if self.phone_number.startswith("0"):
+            return "https://api.whatsapp.com/send?phone=62" + self.phone_number[
+                1:
+            ].replace(" ", "").replace("-", "")
+        if self.phone_number.startswith("+"):
+            return "https://api.whatsapp.com/send?phone=" + self.phone_number[
+                1:
+            ].replace(" ", "").replace("-", "")
+        if self.phone_number.startswith("6"):
+            return "https://api.whatsapp.com/send?phone=" + self.phone_number.replace(
+                " ", ""
+            ).replace("-", "")
