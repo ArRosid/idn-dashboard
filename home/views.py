@@ -32,15 +32,30 @@ def hi_idn(request):
                 hi.email = request.user.email
                 hi.no_hp = request.user.profile.phone_number
                 hi.save()
+
+                salam = settings.WA_HI.format(hi.nama).replace(" ", "%20")
+                pertanyaan = hi.pertanyaan.replace(" ", "%20")
+                url = (
+                    settings.WA_URL + settings.WA_ADMIN + "&text=" + salam + pertanyaan
+                )
+                return redirect(url)
+
+            return render(request, "home/hi_idn_authenticated.html", {"form": form})
+
         else:
             form = HiIDNForms(request.POST)
             if form.is_valid():
                 hi = form.save()
 
-        salam = settings.WA_HI.format(hi.nama).replace(" ", "%20")
-        pertanyaan = hi.pertanyaan.replace(" ", "%20")
-        url = settings.WA_URL + settings.WA_ADMIN + "&text=" + salam + pertanyaan
-        return redirect(url)
+                salam = settings.WA_HI.format(hi.nama).replace(" ", "%20")
+                pertanyaan = hi.pertanyaan.replace(" ", "%20")
+                url = (
+                    settings.WA_URL + settings.WA_ADMIN + "&text=" + salam + pertanyaan
+                )
+                return redirect(url)
+
+            return render(request, "home/hi_idn.html", {"form": form})
+
     else:
         if request.user.is_authenticated:
             form = HiIDNFormsAuthenticated()
