@@ -50,7 +50,7 @@ class RegistrationFormUpdate(forms.ModelForm):
 
 class PaymentConfirmForm(forms.ModelForm):
     proof_of_payment = forms.FileField(
-        validators=[max_file_size_2m], label="Bukti Pembayaran (Max 2M)"
+        validators=[max_file_size_2m], label="Bukti Pembayaran (Max 1M)"
     )
 
     class Meta:
