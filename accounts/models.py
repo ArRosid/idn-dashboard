@@ -54,6 +54,12 @@ class Profile(BaseModel):
 
     def is_valid(self):
         for field_name in self._meta.get_fields():
+            if (
+                field_name.name == "affiliate_id"
+                or field_name.name == "affiliate_point"
+            ):
+                continue
+
             value = getattr(self, field_name.name, None)
             if value is None:
                 return False
