@@ -88,6 +88,7 @@ class Registration(BaseModel):
     last_fu = models.DateTimeField(null=True, blank=True)
     is_retraining = models.BooleanField(default=False)
     diskon_kode = models.CharField(max_length=100, null=True, blank=True)
+    affiliate_kode = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f"{self.user} - {self.training}"

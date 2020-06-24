@@ -28,6 +28,7 @@ from course.models import (
     MaxPeserta,
 )
 from accounts.utils import SendEmail
+from accounts.models import Profile
 from course.choices import TrainingType
 import csv
 import os
@@ -55,6 +56,7 @@ def daftar_training(request):
                         "Mohon maaf, Jadwal ini sudah Full, silahkan pilih jadwal lain"
                     )
 
+                # if they use diskon kode
                 if reg.diskon_kode:
                     diskon = Discount.objects.get(kode=reg.diskon_kode)
                     if (
@@ -68,6 +70,10 @@ def daftar_training(request):
                         raise Exception(
                             "Diskon tidak berlaku untuk tipe training ini atau sudah berahir"
                         )
+
+                # if they use affiliate kode, decrease harga diskon 5% from
+                if reg.affiliate_kode:
+                    harga_diskon = harga_diskon - (reg.training.price * 5 / 100)
 
                 reg.save()
                 data = {
@@ -88,6 +94,8 @@ def daftar_training(request):
             messages.error(request, "Anda sudah mendaftar training ini!")
         except Discount.DoesNotExist:
             messages.error(request, "Kode diskon tidak valid")
+        except Profile.DoesNotExist:
+            messages.error(request, "Kode Affiliate tidak valid")
         except Exception as e:
             messages.error(request, e)
 
@@ -279,6 +287,14 @@ def list_pembayaran_ditolak(request):
 @staff_member_required(login_url="accounts:login")
 def konfirmasi_pembayaran_dp(request, pk):
     pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+
+    if pembayaran.registration.affiliate_kode is not None:
+        up_user = Profile.objects.get(
+            affiliate_id=pembayaran.registration.affiliate_kode
+        )
+        up_user.affiliate_point = up_user.affiliate_point + 200
+        up_user.save()
+
     pembayaran.registration.status = 2
     pembayaran.registration.save()
     pembayaran.status = 2
@@ -296,6 +312,34 @@ def konfirmasi_pembayaran_dp(request, pk):
 @staff_member_required(login_url="accounts:login")
 def konfirmasi_pembayaran_lunas(request, pk):
     pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+    reg_id = pembayaran.registration.id
+
+    # memastikan bahwa sebelumnya belum ada konfirmasi DP untuk pembayaran ini.
+    try:
+        skip = False
+        previous_pembayaran = PaymentConfirm.objects.filter(registration=reg_id)
+        for pemb in previous_pembayaran:
+            # kalau ada pembayaran pada registrasi ini dan status nya DP, maka skip
+            if pemb.status == 2:
+                skip = True
+
+        # kalau tidak skip, berarti belum ada konfirmasi pembayaran DP.. point up user nya ditambah
+        if not skip:
+            if pembayaran.registration.affiliate_kode is not None:
+                up_user = Profile.objects.get(
+                    affiliate_id=pembayaran.registration.affiliate_kode
+                )
+                up_user.affiliate_point = up_user.affiliate_point + 200
+                up_user.save()
+
+    except:
+        if pembayaran.registration.affiliate_kode is not None:
+            up_user = Profile.objects.get(
+                affiliate_id=pembayaran.registration.affiliate_kode
+            )
+            up_user.affiliate_point = up_user.affiliate_point + 200
+            up_user.save()
+
     pembayaran.registration.status = 3
     pembayaran.registration.save()
     pembayaran.status = 3

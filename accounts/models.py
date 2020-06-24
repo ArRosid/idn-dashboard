@@ -46,12 +46,20 @@ class Profile(BaseModel):
     mengetahui_idn_dari = models.CharField(
         max_length=100, null=True, blank=True, choices=MengetahuiIDN.choices
     )
+    affiliate_id = models.CharField(max_length=20, null=True, blank=True)
+    affiliate_point = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.user}"
 
     def is_valid(self):
         for field_name in self._meta.get_fields():
+            if (
+                field_name.name == "affiliate_id"
+                or field_name.name == "affiliate_point"
+            ):
+                continue
+
             value = getattr(self, field_name.name, None)
             if value is None:
                 return False
