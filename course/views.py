@@ -170,8 +170,15 @@ def payment_confirm(request, registration_id):
 
 @staff_member_required(login_url="accounts:login")
 def list_jadwal(request):
-    scheds = Scheddule.objects.all().order_by("-created_at")
-    context = {"scheds": scheds}
+    scheds = Scheddule.objects.filter(training_type=0).order_by("-created_at")
+    context = {"scheds": scheds, "tipe": "Training Offline"}
+    return render(request, "course/list_jadwal.html", context)
+
+
+@staff_member_required(login_url="accounts:login")
+def list_jadwal_online(request):
+    scheds = Scheddule.objects.filter(training_type=1).order_by("-created_at")
+    context = {"scheds": scheds, "tipe": "Training Online"}
     return render(request, "course/list_jadwal.html", context)
 
 
@@ -504,3 +511,21 @@ def set_max_peserta(request):
         form = MaxPesertaForm(instance=max_peserta)
 
     return render(request, "course/set_max_peserta.html", {"form": form})
+
+
+@staff_member_required(login_url="accounts:login")
+def fu(request, reg_id):
+    reg = get_object_or_404(Registration, id=reg_id)
+    reg.fu_count = reg.fu_count + 1
+    reg.last_fu = timezone.now()
+    reg.save()
+
+    nama = reg.user.profile.name.replace(" ", "%20")
+    training = reg.training.name.replace(" ", "%20")
+    training_type = reg.get_training_type().replace(" ", "%20")
+    jadwal = str(reg.scheddule).replace(" ", "%20")
+    wa_link = reg.user.profile.get_wa_send_link()
+
+    url = f"{wa_link}&text=Hi%20Kaka%20*{nama}*%2C%0A%0ABagaimana%20kabarnya%3F%20Semoga%20sehat%20selalu%20yaa%20%3A)%0A%0APerkenalkan%20saya%20vita%20dari%20IDN.%20Kami%20ingin%20melakukan%20konfirmasi%20bahwa%20kakak%20melakukan%20pendaftaran%20pada%3A%0A%0ATraining%20%3A%20*{training}*%0ATipe%20Training%20%3A%20*{training_type}*%0AJadwal%20%3A%20*{jadwal}*%0A%0AApakah%20kakak%20jadi%20ingin%20ikut%20training%20tersebut%3F%20Jika%20iya%2C%20bisa%20segera%20melakukan%20pembayaran%20ke%20salah%20satu%20rekening%20berikut%20ya%20kak%0A%0A▪%EF%B8%8FBCA%205435040460%20an%20Deny%20Kurnia%20Nawangsari%0A▪%EF%B8%8FMandiri%201170000007724%20an%20Deny%20Kurnia%20Nawangsari%0A%0AKemudian%20kakak%20bisa%20melakukan%20konfirmasi%20pembayaran%20di%20https%3A%2F%2Fmy.idn.id%0A%0AJika%20ada%20pertanyaan%20lebih%20lanjut%2C%20bisa%20reply%20chat%20ini%20ya%20kak%20%3A)"
+
+    return redirect(url)

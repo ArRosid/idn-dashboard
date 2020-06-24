@@ -5,6 +5,7 @@ from course.views import (
     edit_pendaftaran,
     payment_confirm,
     list_jadwal,
+    list_jadwal_online,
     download_contoh_jadwal,
     AddJadwal,
     UpdateJadwal,
@@ -29,6 +30,7 @@ from course.views import (
     delete_diskon,
     upload_jadwal,
     set_max_peserta,
+    fu,
 )
 
 app_name = "course"
@@ -43,6 +45,7 @@ urlpatterns = [
         name="payment_confirm",
     ),
     path("list_jadwal/", list_jadwal, name="list_jadwal"),
+    path("list_jadwal_online/", list_jadwal_online, name="list_jadwal_online"),
     path(
         "download_contoh_jadwal/", download_contoh_jadwal, name="download_contoh_jadwal"
     ),
@@ -93,4 +96,5 @@ urlpatterns = [
     path("delete_diskon/<int:pk>", delete_diskon, name="delete_diskon"),
     path("upload_jadwal/", upload_jadwal, name="upload_jadwal"),
     path("set_max_peserta/", set_max_peserta, name="set_max_peserta"),
+    path("fu/<int:reg_id>/", fu, name="fu"),
 ]

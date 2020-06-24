@@ -42,7 +42,7 @@
         </td>
         {% endif %}
       <td>
-            {% if reg.status == 0 %}
+            {% if reg.status == 0 or reg.status == 4 or reg.status == 2 %}
 
           <div class="btn-group">
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,7 +52,9 @@
 {#              <a class="dropdown-item" href="{% url 'course:edit_pendaftaran' reg.id %}">Edit</a>#}
               <a class="dropdown-item" href="{% url 'course:payment_confirm' reg.id %}">Konfirmasi Pembayaran</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ reg.id }}">Delete</a>
+              {% if reg.status == 0 %}
+                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ reg.id }}">Delete</a>
+              {% endif %}
           </div>
         </div>
             {% else %}

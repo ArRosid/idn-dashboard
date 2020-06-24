@@ -84,6 +84,8 @@ class Registration(BaseModel):
         choices=RegistrationPaymentStatus.choices,
         default=RegistrationPaymentStatus.not_paid,
     )
+    fu_count = models.IntegerField(default=0)
+    last_fu = models.DateTimeField(null=True, blank=True)
     is_retraining = models.BooleanField(default=False)
     diskon_kode = models.CharField(max_length=100, null=True, blank=True)
     affiliate_kode = models.CharField(max_length=100, null=True, blank=True)
@@ -113,6 +115,9 @@ class PaymentConfirm(BaseModel):
 
     def get_status(self):
         return RegistrationPaymentStatus.choices[self.status][1]
+
+    def get_amount(self):
+        return "{:,}".format(self.amount)
 
     def __str__(self):
         return f"{self.user} - {self.registration.training}"

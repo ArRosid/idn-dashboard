@@ -20,7 +20,10 @@
       <th scope="col">Training</th>
       <th scope="col">Training Type</th>
       <th scope="col">Jadwal</th>
+      <th scope="col">Jumlah FU</th>
+      <th scope="col">Last FU</th>
       <th scope="col">Created At</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -31,7 +34,10 @@
       <td>{{ pendaftar.training.name }}</td>
       <td>{{ pendaftar.get_training_type }}</td>
       <td>{{ pendaftar.scheddule }}</td>
+      <td>{{ pendaftar.fu_count }}</td>
+      <td>{{ pendaftar.last_fu }}</td>
       <td>{{ pendaftar.created_at }}</td>
+      <td><a href="{% url 'course:fu' pendaftar.id %}" target="_blank">FU</a></td>
     </tr>
     {% endfor %}
   </tbody>

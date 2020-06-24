@@ -26,6 +26,17 @@ Hi {{ name }}, <br/><br>
     </tr>
 </table>
 
+    {% if training == "MTCNA" and training_type == "Training Online" %}
+    <p>
+        **Khusus untuk Training Online MTCNA, Harga tetap 2jt karena include RouterBoard.
+        Jika Anda sudah memiliki RouterBoard, maka Anda bisa menggunakan harga 1.5jt exclude RouterBoard.
+    </p>
+    <p>
+    Namun jika Anda tidak memiliki RouterBoard, sangat disarankan menggunakan harga 2jt include RouterBoard.
+    Mengingat bahwa Anda wajib memiliki RouterBoard untuk mengikuti Training MTCNA Online.
+    </p>
+    {% endif %}
+
 <p>Bisa melakukan pembayaran secara full maupun DP. Untuk DP minimal Rp 500.000
 dan pelunasan maksimal H-1 training.</p>
 <p>Kirim pembayaran ke salah satu rekening berikut</p>
@@ -35,4 +46,6 @@ dan pelunasan maksimal H-1 training.</p>
 </ul>
 <p>Setelah melakukan pembayaran, lakukan konfirmasi pembayaran dari Dahsboard IDN</p>
 
+    <strong>**Fasilitas Training Online akan dikirim apabila sudah melunasi pembayaran,
+        pastikan alamat yang dicantumkan saat pendaftaran sudah lengkap & benar</strong>
 {% endblock %}
