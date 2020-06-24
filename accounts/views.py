@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -73,6 +74,11 @@ def affiliate_view(request):
     affiliate_id = request.user.profile.affiliate_id
     affiliate_point = request.user.profile.affiliate_point
     my_affiliate = Registration.objects.filter(affiliate_kode=affiliate_id)
+
+    my_affiliate_code = request.user.profile.affiliate_id
+    my_downlink = Registration.objects.filter(affiliate_kode=my_affiliate_code)
+    my_downlink_fix = my_downlink.filter(Q(status=2) | Q(status=3))
+
     return render(
         request,
         "accounts/affiliate_list.html",
@@ -80,5 +86,6 @@ def affiliate_view(request):
             "affiliate_id": affiliate_id,
             "affiliate_point": affiliate_point,
             "my_affiliate": my_affiliate,
+            "my_downlink": my_downlink_fix,
         },
     )
