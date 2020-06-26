@@ -10,3 +10,7 @@ class MengetahuiIDN:
         ("Google", "Google"),
         ("Teman", "Teman"),
     )
+
+
+class UkuranKaos:
+    choices = (("L", "L"), ("XL", "XL"), ("XXL", "XXL"), ("XXXL", "XXXL"))

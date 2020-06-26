@@ -22,6 +22,7 @@ class ProfileForm(forms.ModelForm):
             "address",
             "phone_number",
             "mengetahui_idn_dari",
+            "ukuran_kaos",
         )
         labels = {
             "name": "Nama",
@@ -31,4 +32,5 @@ class ProfileForm(forms.ModelForm):
             "address": "Alamat",
             "phone_number": "No HP (WA)",
             "mengetahui_idn_dari": "Mengetahui IDN dari Mana?",
+            "ukuran_kaos": "Ukuran Kaos",
         }

@@ -3,7 +3,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from core.models import BaseModel
 from accounts.managers import UserManager
-from accounts.choices import LinkModelUsedFor, MengetahuiIDN
+from accounts.choices import LinkModelUsedFor, MengetahuiIDN, UkuranKaos
 
 
 class User(AbstractBaseUser, PermissionsMixin, BaseModel):
@@ -45,6 +45,9 @@ class Profile(BaseModel):
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     mengetahui_idn_dari = models.CharField(
         max_length=100, null=True, blank=True, choices=MengetahuiIDN.choices
+    )
+    ukuran_kaos = models.CharField(
+        max_length=10, null=True, blank=True, choices=UkuranKaos.choices
     )
     affiliate_id = models.CharField(max_length=20, null=True, blank=True)
     affiliate_point = models.IntegerField(default=0)

@@ -13,6 +13,7 @@
       <th scope="col">Jadwal</th>
       <th scope="col">Email</th>
       <th scope="col">No HP</th>
+      <th scope="col">Ukuran Kaos</th>
       <th scope="col">Alamat</th>
     </tr>
   </thead>
@@ -26,6 +27,7 @@
       <td>{{ pendaftar.scheddule }}</td>
       <td>{{ pendaftar.user.email }}</td>
       <td><a href="{{ pendaftar.user.profile.get_wa_link }}" target="_blank">  {{ pendaftar.user.profile.phone_number }}</a></td>
+      <td>{{ pendaftar.user.profile.ukuran_kaos }}</td>
       <td>{{ pendaftar.user.profile.address }}</td>
     </tr>
     {% endfor %}
