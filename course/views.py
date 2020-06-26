@@ -73,6 +73,7 @@ def daftar_training(request):
 
                 # if they use affiliate kode, decrease harga diskon 5% from
                 if reg.affiliate_kode:
+                    Profile.objects.get(affiliate_id=reg.affiliate_kode)
                     harga_diskon = harga_diskon - (reg.training.price * 5 / 100)
 
                 reg.save()
