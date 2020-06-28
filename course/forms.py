@@ -35,12 +35,19 @@ class RegistrationFormAdd(forms.ModelForm):
             "scheddule",
             "diskon_kode",
             "affiliate_kode",
+            "affiliate_point_used",
         )
         labels = {
             "training": "Training",
             "scheddule": "Jadwal",
             "diskon_kode": "Kode Diskon",
             "affiliate_kode": "Kode Affiliate",
+            "affiliate_point_used": "Gunakan Affiliate Point",
+        }
+        widgets = {
+            "affiliate_point_used": forms.TextInput(
+                attrs={"placeholder": "Contoh: 200"}
+            )
         }
 
 

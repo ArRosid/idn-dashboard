@@ -89,6 +89,10 @@ class Registration(BaseModel):
     is_retraining = models.BooleanField(default=False)
     diskon_kode = models.CharField(max_length=100, null=True, blank=True)
     affiliate_kode = models.CharField(max_length=100, null=True, blank=True)
+    affiliate_point_used = models.IntegerField(null=True, blank=True)
+
+    # this fields is automatically filled by the system
+    harga_diskon = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user} - {self.training}"
@@ -101,6 +105,9 @@ class Registration(BaseModel):
 
     def get_training_type(self):
         return TrainingType.choices[self.scheddule.training_type][1]
+
+    def format_harga_diskon(self):
+        return "{:,}".format(self.harga_diskon)
 
 
 class PaymentConfirm(BaseModel):
@@ -142,3 +149,9 @@ class JadwalFile(BaseModel):
 
 class MaxPeserta(BaseModel):
     max_peserta = models.PositiveIntegerField()
+
+
+class PointHistory(BaseModel):
+    point_used = models.IntegerField()
+    registration = models.ForeignKey(Registration, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

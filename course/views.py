@@ -26,6 +26,7 @@ from course.models import (
     PaymentConfirm,
     Discount,
     MaxPeserta,
+    PointHistory,
 )
 from accounts.utils import SendEmail
 from accounts.models import Profile
@@ -76,6 +77,24 @@ def daftar_training(request):
                     Profile.objects.get(affiliate_id=reg.affiliate_kode)
                     harga_diskon = harga_diskon - (reg.training.price * 5 / 100)
 
+                # If the use affiliate point,
+                # make sure that affiliate_point_used is not more than affiliate_point that they have.
+                # if valid, set harga_diskon - affiliate_point * 1000
+                if reg.affiliate_point_used:
+                    user_profile = Profile.objects.get(user=request.user.id)
+                    if int(reg.affiliate_point_used) > int(
+                        user_profile.affiliate_point
+                    ):
+                        raise Exception(
+                            "Affiliate Point yang Anda masukkan melebihi Affiliate Point yang Anda miliki"
+                        )
+                    else:
+                        harga_diskon = harga_diskon - (
+                            int(reg.affiliate_point_used) * 1000
+                        )
+
+                # set harga diskon, ini akan ditampilkan di admin berapa yg harus mereka bayar
+                reg.harga_diskon = harga_diskon
                 reg.save()
                 data = {
                     "name": reg.user.email,
@@ -157,6 +176,7 @@ def payment_confirm(request, registration_id):
             payment.save()
             reg.status = 1
             reg.save()
+            # todo kirim email juga ke pserta, terimakasih telah melakukan konfirmasi pembayaran
             messages.success(
                 request,
                 "Terimakasih telah melakukan konfirmasi pembayaran. Admin kami akan segera menghubungi Anda via email maksimal 1x24 jam",
@@ -289,12 +309,28 @@ def list_pembayaran_ditolak(request):
 def konfirmasi_pembayaran_dp(request, pk):
     pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
 
+    # if they use affiliate_kode, add up_user point to 200
     if pembayaran.registration.affiliate_kode is not None:
         up_user = Profile.objects.get(
             affiliate_id=pembayaran.registration.affiliate_kode
         )
         up_user.affiliate_point = up_user.affiliate_point + 200
         up_user.save()
+
+    # if the use affiliate point when register, kurangi affiliate point yg dia punya
+    if pembayaran.registration.affiliate_point_used is not None:
+        user_profile = pembayaran.registration.user.profile
+        user_profile.affiliate_point = (
+            user_profile.affiliate_point - pembayaran.registration.affiliate_point_used
+        )
+        user_profile.save()
+
+        # create point history object
+        PointHistory.objects.create(
+            registration=pembayaran.registration,
+            point_used=pembayaran.registration.affiliate_point_used,
+            user=pembayaran.registration.user,
+        )
 
     pembayaran.registration.status = 2
     pembayaran.registration.save()
@@ -332,6 +368,22 @@ def konfirmasi_pembayaran_lunas(request, pk):
                 )
                 up_user.affiliate_point = up_user.affiliate_point + 200
                 up_user.save()
+
+            # if the use affiliate point when register, kurangi affiliate point yg dia punya
+            if pembayaran.registration.affiliate_point_used is not None:
+                user_profile = pembayaran.registration.user.profile
+                user_profile.affiliate_point = (
+                    user_profile.affiliate_point
+                    - pembayaran.registration.affiliate_point_used
+                )
+                user_profile.save()
+
+                # create point history object
+                PointHistory.objects.create(
+                    registration=pembayaran.registration,
+                    point_used=pembayaran.registration.affiliate_point_used,
+                    user=pembayaran.registration.user,
+                )
 
     except:
         if pembayaran.registration.affiliate_kode is not None:

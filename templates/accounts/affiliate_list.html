@@ -7,6 +7,39 @@
     <strong>Kode Affiliate Anda: <span style="color: red">{{ affiliate_id }}</span> </strong>
     <br>
     <strong>Point Anda: <span style="color: red">{{ affiliate_point }}</span></strong>
+    <br><strong>Note:</strong><br>
+    <p>Anda akan mendapatkan 200 point setiap Ada orang yang mendaftar Training Apapun di IDN menggunakan kode affiliate milik Anda</p>
+    <p>Affiliate Point bisa dimanfaatkan untuk mengikuti Training ataupun ditukarkan
+    dengan produk apapun di <a href="https://toko.idn.id" target="_blank">Toko IDN</a>.</p>
+    <p>1 point bernilai 1.000 rupiah. Anda bisa juga mamenfaatkan point untuk membayar sebagian biaya Training.
+    <br>Sebagai contoh biaya Training 2.500.000, Kemudian Anda memiliki 500 Point, maka Anda bisa menggunakan point tersebut,
+    <br>sehingga Anda hanya perlu membayar 2.000.000 rupiah.</p>
+
+    <br>
+    <h4 class="mt-4">Point History</h4>
+    <table class="table" id="table_id">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Point</th>
+      <th scope="col">Training</th>
+      <th scope="col">Training Type</th>
+      <th scope="col">Jadwal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for point in my_point_history %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ point.point_used}}</td>
+      <td>{{ point.registration.training.name }}</td>
+      <td>{{ point.registration.get_training_type }}</td>
+      <td>{{ point.registration.scheddule }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 
     <br>
     <h4 class="mt-4">List Peserta Affiliate</h4>
