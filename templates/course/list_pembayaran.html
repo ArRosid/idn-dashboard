@@ -12,6 +12,7 @@
       <th scope="col">Training</th>
       <th scope="col">Training Type</th>
       <th scope="col">Jadwal</th>
+      <th scope="col">Yang harus dibayarkan</th>
       <th scope="col">Jumlah Bayar</th>
       <th scope="col">Bukti Pembayaran</th>
       <th scope="col">Action</th>
@@ -25,6 +26,7 @@
       <td>{{ pembayaran.registration.training.name }}</td>
       <td>{{ pembayaran.registration.get_training_type }}</td>
       <td>{{ pembayaran.registration.scheddule }}</td>
+      <td>{{ pembayaran.registration.format_harga_diskon }}</td>
       <td>{{ pembayaran.get_amount }}</td>
       <td><a target="_blank" href="{{ pembayaran.proof_of_payment.url }}">Bukti</a> </td>
 

@@ -9,6 +9,7 @@ from course.models import (
     MonthYearScheddule,
     Discount,
     JadwalFile,
+    PointHistory,
 )
 
 
@@ -54,4 +55,9 @@ class DiscountAdmin(admin.ModelAdmin):
 
 @admin.register(JadwalFile)
 class JadwalFileAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(PointHistory)
+class PointHistoryAdmin(admin.ModelAdmin):
     pass

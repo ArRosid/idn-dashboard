@@ -8,7 +8,7 @@ from accounts.forms import SignUpForm, ProfileForm
 from accounts.tokens import token_generator
 from accounts.utils import SendEmail
 from accounts.models import LinkToken, Profile
-from course.models import Registration
+from course.models import Registration, PointHistory
 
 
 def signup(request):
@@ -78,7 +78,8 @@ def affiliate_view(request):
     my_affiliate_code = request.user.profile.affiliate_id
     my_downlink = Registration.objects.filter(affiliate_kode=my_affiliate_code)
     my_downlink_fix = my_downlink.filter(Q(status=2) | Q(status=3))
-
+    my_point_history = PointHistory.objects.filter(user=request.user)
+    print(my_point_history)
     return render(
         request,
         "accounts/affiliate_list.html",
@@ -87,5 +88,6 @@ def affiliate_view(request):
             "affiliate_point": affiliate_point,
             "my_affiliate": my_affiliate,
             "my_downlink": my_downlink_fix,
+            "my_point_history": my_point_history,
         },
     )
