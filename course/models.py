@@ -107,7 +107,10 @@ class Registration(BaseModel):
         return TrainingType.choices[self.scheddule.training_type][1]
 
     def format_harga_diskon(self):
-        return "{:,}".format(self.harga_diskon)
+        if self.harga_diskon is not None:
+            return "{:,}".format(self.harga_diskon)
+        else:
+            return self.harga_diskon
 
 
 class PaymentConfirm(BaseModel):
