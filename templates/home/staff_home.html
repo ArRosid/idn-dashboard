@@ -1,6 +1,7 @@
 
   <div id="container" style="width: 75%;">
-    <canvas id="population-chart" data-url="{% url 'api:peserta_online' %}"></canvas>
+    <canvas id="peserta_online" data-url="{% url 'api:peserta_online' %}"></canvas>
+    <canvas id="peserta_offline" data-url="{% url 'api:peserta_offline' %}"></canvas>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -9,19 +10,19 @@
 
     $(function () {
 
-      var $populationChart = $("#population-chart");
+      var $pesertaOnline = $("#peserta_online");
       $.ajax({
-        url: $populationChart.data("url"),
+        url: $pesertaOnline.data("url"),
         success: function (data) {
 
-          var ctx = $populationChart[0].getContext("2d");
+          var ctx = $pesertaOnline[0].getContext("2d");
 
           new Chart(ctx, {
             type: 'bar',
             data: {
               labels: data.labels,
               datasets: [{
-                label: 'Population',
+                label: 'Peserta Online',
                 backgroundColor: 'blue',
                 data: data.data
               }]          
@@ -33,7 +34,44 @@
               },
               title: {
                 display: true,
-                text: 'Population Bar Chart'
+                text: 'Grafik Peserta Online Total'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+
+  $(function () {
+
+      var $pesertaOffline = $("#peserta_offline");
+      $.ajax({
+        url: $pesertaOffline.data("url"),
+        success: function (data) {
+
+          var ctx = $pesertaOffline[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Peserta Offline',
+                backgroundColor: 'blue',
+                data: data.data
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Grafik Peserta Offline Total'
               }
             }
           });
