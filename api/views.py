@@ -67,4 +67,10 @@ def peserta_online(request):
         count = len(online_registration.filter(training=t))
         data.append(count)
 
+    # shorting based on jumlah peserta (data)
+    zipped_lists = zip(data, training)
+    sorted_pairs = sorted(zipped_lists, reverse=True)
+    tuples = zip(*sorted_pairs)
+    data, training = [list(tuple) for tuple in tuples]
+
     return JsonResponse(data={"labels": training, "data": data})
