@@ -1,5 +1,13 @@
+from django.db.models import Q
+from django.http import JsonResponse
 from rest_framework import generics
-from course.models import Training, TrainingCategory, Scheddule, MonthYearScheddule
+from course.models import (
+    Training,
+    TrainingCategory,
+    Scheddule,
+    MonthYearScheddule,
+    Registration,
+)
 from api.serializers import TrainingSerializer, SchedduleSerizlizer
 
 
@@ -43,3 +51,20 @@ class SchedduleList(generics.ListAPIView):
                 data.pop(d)
         print(data)
         return Scheddule.objects.filter(**data)
+
+
+def peserta_online(request):
+    training = []
+    data = []
+
+    registration = Registration.objects.filter(Q(training_type=1))
+    online_registration = registration.filter(Q(status=2) | Q(status=3))
+
+    all_training = Training.objects.all()
+
+    for t in all_training:
+        training.append(t.name)
+        count = len(online_registration.filter(training=t))
+        data.append(count)
+
+    return JsonResponse(data={"labels": training, "data": data})
