@@ -112,6 +112,9 @@ class Registration(BaseModel):
         else:
             return self.harga_diskon
 
+    def get_created_at_month_year(self):
+        return f"{Month.choices[self.created_at.month - 1][1]} {self.created_at.year}"
+
 
 class PaymentConfirm(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

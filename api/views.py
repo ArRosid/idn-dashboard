@@ -97,3 +97,46 @@ def peserta_offline(request):
     data, training = [list(tuple) for tuple in tuples]
 
     return JsonResponse(data={"labels": training, "data": data})
+
+
+# jumlah yg daftar, baik yg bayar / tidak
+# based on created_at
+def pendaftar_bulanan(request):
+    queryset = Registration.objects.all().order_by("created_at")
+    data = {}
+    for q in queryset:
+        created_at = q.get_created_at_month_year()
+        if created_at not in data:
+            data[created_at] = 1
+        else:
+            data[created_at] += 1
+
+    bulan = data.keys()
+    jumlah = data.values()
+
+    return JsonResponse(data={"labels": bulan, "data": jumlah})
+
+
+# jumlah yg daftar & bayar
+# based on created_at
+def peserta_bayar_bulanan(request):
+    queryset = Registration.objects.all().order_by("created_at")
+    queryset = queryset.filter(Q(status=2) | Q(status=3))
+    data = {}
+    for q in queryset:
+        created_at = q.get_created_at_month_year()
+        if created_at not in data:
+            data[created_at] = 1
+        else:
+            data[created_at] += 1
+
+    bulan = data.keys()
+    jumlah = data.values()
+
+    return JsonResponse(data={"labels": bulan, "data": jumlah})
+
+
+# jumlah peserta pada bulan itu
+# based on jadwal
+def peserta_bulanan(request):
+    pass
