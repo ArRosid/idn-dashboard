@@ -3,7 +3,7 @@
 
 
     {% if user.is_staff %}
-        <h1>Statistik pendaftar</h1>
+        {% include 'home/staff_home.html' %}
     {% else %}
     {% include 'home/users_home.html' %}
     {% endif %}
