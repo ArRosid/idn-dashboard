@@ -32,7 +32,7 @@ class SendEmail:
         send_mail(
             subject="Aktifasi Akun IDN.ID",
             message=plain_message,
-            from_email=settings.EMAIL_FORM,
+            from_email=f"Info IDN.ID <{settings.EMAIL_FORM}>",
             recipient_list=[self.user.email,],
             html_message=html_message,
             fail_silently=False,
@@ -45,7 +45,7 @@ class SendEmail:
         send_mail(
             subject="Panduan Pembayaran Training IDN.ID",
             message=plain_message,
-            from_email=settings.EMAIL_FORM,
+            from_email=f"Info IDN.ID <{settings.EMAIL_FORM}>",
             recipient_list=[self.user.email,],
             html_message=html_message,
             fail_silently=False,
@@ -58,7 +58,7 @@ class SendEmail:
         send_mail(
             subject="Konfirmasi Pembayaran Training IDN.ID",
             message=plain_message,
-            from_email=settings.EMAIL_FORM,
+            from_email=f"Info IDN.ID <{settings.EMAIL_FORM}>",
             recipient_list=[self.user.email,],
             html_message=html_message,
             fail_silently=False,
@@ -71,7 +71,7 @@ class SendEmail:
         send_mail(
             subject="Konfirmasi Pembayaran Training IDN.ID",
             message=plain_message,
-            from_email=settings.EMAIL_FORM,
+            from_email=f"Info IDN.ID <{settings.EMAIL_FORM}>",
             recipient_list=[self.user.email,],
             html_message=html_message,
             fail_silently=False,
@@ -84,7 +84,7 @@ class SendEmail:
         send_mail(
             subject="Konfirmasi Pembayaran Training IDN.ID",
             message=plain_message,
-            from_email=settings.EMAIL_FORM,
+            from_email=f"Info IDN.ID <{settings.EMAIL_FORM}>",
             recipient_list=[self.user.email,],
             html_message=html_message,
             fail_silently=False,

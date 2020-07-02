@@ -63,7 +63,7 @@ def profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Akun Anda berhasil di update!")
-            return redirect("accounts:profile")
+            return redirect("home:home")
     else:
         form = ProfileForm(instance=request.user.profile)
     return render(request, "accounts/update_profile.html", {"form": form})
