@@ -2,6 +2,8 @@
   <div id="container" style="width: 75%;">
     <canvas id="peserta_online" data-url="{% url 'api:peserta_online' %}"></canvas>
     <canvas id="peserta_offline" data-url="{% url 'api:peserta_offline' %}"></canvas>
+    <canvas id="pendaftar_bulanan" data-url="{% url 'api:pendaftar_bulanan' %}"></canvas>
+    <canvas id="peserta_bayar_bulanan" data-url="{% url 'api:peserta_bayar_bulanan' %}"></canvas>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -72,6 +74,83 @@
               title: {
                 display: true,
                 text: 'Grafik Peserta Offline Total'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+
+  $(function () {
+
+      var $pendaftarBulanan = $("#pendaftar_bulanan");
+      $.ajax({
+        url: $pendaftarBulanan.data("url"),
+        success: function (data) {
+
+          var ctx = $pendaftarBulanan[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Pendaftar',
+                backgroundColor: 'blue',
+                data: data.data
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Grafik Pendaftar Bulanan'
+              }
+            }
+          });
+
+        }
+      });
+
+    });
+
+
+
+
+
+  $(function () {
+
+      var $pesertaBayarBulanan = $("#peserta_bayar_bulanan");
+      $.ajax({
+        url: $pesertaBayarBulanan.data("url"),
+        success: function (data) {
+
+          var ctx = $pesertaBayarBulanan[0].getContext("2d");
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: data.labels,
+              datasets: [{
+                label: 'Pendaftar Bayar',
+                backgroundColor: 'blue',
+                data: data.data
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'top',
+              },
+              title: {
+                display: true,
+                text: 'Grafik Pendaftar Bayar Bulanan'
               }
             }
           });
