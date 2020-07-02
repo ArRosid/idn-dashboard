@@ -1,5 +1,12 @@
 from django.urls import path
-from api.views import TrainingList, SchedduleList, peserta_online, peserta_offline
+from api.views import (
+    TrainingList,
+    SchedduleList,
+    peserta_online,
+    peserta_offline,
+    pendaftar_bulanan,
+    peserta_bayar_bulanan,
+)
 
 app_name = "api"
 
@@ -8,4 +15,6 @@ urlpatterns = [
     path("scheddules/", SchedduleList.as_view(), name="SchedduleList"),
     path("peserta_online/", peserta_online, name="peserta_online"),
     path("peserta_offline/", peserta_offline, name="peserta_offline"),
+    path("pendaftar_bulanan/", pendaftar_bulanan, name="pendaftar_bulanan"),
+    path("peserta_bayar_bulanan/", peserta_bayar_bulanan, name="peserta_bayar_bulanan"),
 ]
