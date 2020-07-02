@@ -111,8 +111,8 @@ def pendaftar_bulanan(request):
         else:
             data[created_at] += 1
 
-    bulan = data.keys()
-    jumlah = data.values()
+    bulan = list(data.keys())
+    jumlah = list(data.values())
 
     return JsonResponse(data={"labels": bulan, "data": jumlah})
 
@@ -130,8 +130,8 @@ def peserta_bayar_bulanan(request):
         else:
             data[created_at] += 1
 
-    bulan = data.keys()
-    jumlah = data.values()
+    bulan = list(data.keys())
+    jumlah = list(data.values())
 
     return JsonResponse(data={"labels": bulan, "data": jumlah})
 
