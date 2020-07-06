@@ -107,7 +107,7 @@ def daftar_training(request):
                 SendEmail(user=reg.user).panduan_pembayaran(data)
                 messages.success(
                     request,
-                    "Pendaftaran berhasil, silahkan check email Anda untuk melihat Panduan Pembayaran",
+                    "Pendaftaran berhasil, silahkan check email Anda untuk melihat Panduan Pembayaran (check folder spam, promotions, dll)",
                 )
                 return redirect("home:home")
         except IntegrityError:
@@ -152,7 +152,7 @@ def edit_pendaftaran(request, pk):
 @login_required
 def delete_registration(request, pk):
     reg = get_object_or_404(Registration, pk=pk)
-    if reg.status != 0:
+    if reg.status == 1 or reg.status == 2 or reg.status == 3:
         messages.error(
             request,
             "Anda tidak bisa menghapus pendaftaran setelah melakukan pembayaran",
@@ -369,7 +369,7 @@ def konfirmasi_pembayaran_lunas(request, pk):
                 up_user.affiliate_point = up_user.affiliate_point + 200
                 up_user.save()
 
-            # if the use affiliate point when register, kurangi affiliate point yg dia punya
+            # if they use affiliate point when register, kurangi affiliate point yg dia punya
             if pembayaran.registration.affiliate_point_used is not None:
                 user_profile = pembayaran.registration.user.profile
                 user_profile.affiliate_point = (
@@ -386,6 +386,7 @@ def konfirmasi_pembayaran_lunas(request, pk):
                 )
 
     except:
+        # if they use affiliate kode, tambahkan 200 pint untuk up_user
         if pembayaran.registration.affiliate_kode is not None:
             up_user = Profile.objects.get(
                 affiliate_id=pembayaran.registration.affiliate_kode
@@ -420,6 +421,16 @@ def hapus_konfirmasi(request, pk):
 @staff_member_required(login_url="accounts:login")
 def tolak_pembayaran(request, pk):
     pembayaran = get_object_or_404(PaymentConfirm, pk=pk)
+
+    # ini untuk refund, point uplink user harus dikurangi
+    if pembayaran.registration.affiliate_kode is not None:
+        if pembayaran.registration.status == 2 or pembayaran.registration.status == 3:
+            up_user = Profile.objects.get(
+                affiliate_id=pembayaran.registration.affiliate_kode
+            )
+            up_user.affiliate_point = up_user.affiliate_point - 200
+            up_user.save()
+
     pembayaran.registration.status = 4
     pembayaran.registration.save()
     pembayaran.status = 4
