@@ -25,7 +25,7 @@ def signup(request):
             SendEmail(user=user).account_activation(link=link)
             messages.success(
                 request,
-                "Akun Anda berhasil dibuat, silahkan check email untuk melakukan konfirmasi",
+                "Akun Anda berhasil dibuat, silahkan check email untuk melakukan konfirmasi (check folder spam, promotions, dll)",
             )
             return redirect("accounts:login")
 
