@@ -288,10 +288,23 @@ def list_pembayaran(request):
 @staff_member_required(login_url="accounts:login")
 def list_pembayaran_dp_lunas(request):
     list_pembayaran = PaymentConfirm.objects.filter(Q(status=2) | Q(status=3))
+
+    # cari total unique payment
+    reg_list = []
+    new_list_pembayaran = []
+    for pembayaran in list_pembayaran:
+        if pembayaran.registration not in reg_list:
+            new_list_pembayaran.append(pembayaran)
+        reg_list.append(pembayaran.registration)
+
     return render(
         request,
         "course/list_pembayaran_dp_lunas.html",
-        {"list_pembayaran": list_pembayaran, "title": "List Pembayaran DP / Lunas"},
+        {
+            "list_pembayaran": list_pembayaran,
+            "title": "List Pembayaran DP / Lunas",
+            "total_unique_payment": len(new_list_pembayaran),
+        },
     )
 
 
