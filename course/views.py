@@ -222,6 +222,26 @@ class AddJadwal(generic.CreateView):
         return reverse("course:list_jadwal")
 
 
+@staff_member_required(login_url="accounts:login")
+def add_jadwal(request):
+    if request.method == "POST":
+        request.POST._mutable = True
+        day = request.POST.pop("day_")[0]
+        month_year = MonthYearScheddule.objects.get(id=request.POST.get("month_year"))
+        day, created = DayScheddule.objects.get_or_create(day=day, month_year=month_year)
+        form = SchedduleForm(request.POST)
+        if form.is_valid():
+            jadwal = form.save(commit=False)
+            jadwal.day = day
+            jadwal.save()
+            messages.success(request, "Jadwal berhasil ditambahkan")
+            return redirect("course:list_jadwal")
+    else:
+        form = SchedduleForm()
+
+    return render(request, "course/add_jadwal.html", {"form": form})
+
+
 class UpdateJadwal(generic.UpdateView):
     model = Scheddule
     form_class = SchedduleForm

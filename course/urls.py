@@ -8,6 +8,7 @@ from course.views import (
     list_jadwal_online,
     download_contoh_jadwal,
     AddJadwal,
+    add_jadwal,
     UpdateJadwal,
     delete_jadwal,
     list_training,
@@ -49,7 +50,7 @@ urlpatterns = [
     path(
         "download_contoh_jadwal/", download_contoh_jadwal, name="download_contoh_jadwal"
     ),
-    path("add_jadwal/", AddJadwal.as_view(), name="add_jadwal"),
+    path("add_jadwal/", add_jadwal, name="add_jadwal"),
     path("update_jadwal/<int:pk>/", UpdateJadwal.as_view(), name="update_jadwal"),
     path("delete_jadwal/<int:pk>/", delete_jadwal, name="delete_jadwal"),
     path("list_training/", list_training, name="list_training"),
