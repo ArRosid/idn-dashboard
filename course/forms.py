@@ -69,9 +69,11 @@ class PaymentConfirmForm(forms.ModelForm):
 
 
 class SchedduleForm(forms.ModelForm):
+    day_ = forms.CharField(required=False)
+
     class Meta:
         model = Scheddule
-        fields = ("training", "training_type", "month_year", "day")
+        fields = ("training", "training_type", "month_year", "day_")
 
 
 class TrainingForm(forms.ModelForm):
