@@ -53,3 +53,8 @@ def delete_interaksi(request, pk):
     interaksi.delete()
     messages.success(request, "Interaksi berhasil di hapus")
     return redirect("marketing:list_interaksi")
+
+
+@staff_member_required(login_url="accounts:login")
+def interaksi_bulanan(request):
+    return render(request, "marketing/interaksi_graph.html")
