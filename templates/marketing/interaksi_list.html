@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+    <h3>List Interaksi</h3>
+        <a href="{% url 'marketing:add_interaksi' %}">
+        <button type="button" class="mt-2 btn btn-primary mb-2">Add Interaksi</button>
+    </a>
+    <table class="table" id="table_id">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tim Marketing</th>
+      <th scope="col">Nama Client</th>
+      <th scope="col">Sumber</th>
+      <th scope="col">No HP</th>
+      <th scope="col">Email</th>
+      <th scope="col">IG</th>
+      <th scope="col">FB</th>
+      <th scope="col">Topik</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for interaksi in object_list %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ interaksi.tim_marketing }}</td>
+      <td>{{ interaksi.nama_client }}</td>
+      <td>{{ interaksi.sumber }}</td>
+    {% if interaksi.no_hp is not None %}
+         <td>{{ interaksi.no_hp }}</td>
+    {% else %}
+        <td></td>
+    {% endif %}
+
+    {% if interaksi.email is not None %}
+         <td>{{ interaksi.email }}</td>
+    {% else %}
+        <td></td>
+    {% endif %}
+
+    {% if interaksi.ig is not None %}
+         <td>{{ interaksi.ig }}</td>
+    {% else %}
+        <td></td>
+    {% endif %}
+
+    {% if interaksi.fb is not None %}
+         <td>{{ interaksi.fb }}</td>
+    {% else %}
+        <td></td>
+    {% endif %}
+
+      <td>{{ interaksi.topik }}</td>
+
+      <td>
+          <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Action
+          </button>
+          <div class="dropdown-menu">
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'marketing:edit_interaksi' pk=interaksi.id %}">Edit</a>
+            <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal-{{ interaksi.id }}">Delete</a>
+          </div>
+        </div>
+      </td>
+
+    </tr>
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal-{{ interaksi.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Interaksi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Anda yakin ingin menghapus Interaksi {{ interaksi.nama_client }}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="{% url 'marketing:delete_interaksi' interaksi.id %}">
+                  <button type="button" class="btn btn-danger">Delete</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

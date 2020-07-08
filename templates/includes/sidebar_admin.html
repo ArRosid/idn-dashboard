@@ -3,32 +3,24 @@
         Interface
       </div>
 
-      <!-- Nav Item - Tables -->
+
+      <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'course:list_jadwal' %}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>List Jadwal Offline</span></a>
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsetraining" aria-expanded="true" aria-controls="collapsetraining">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Training</span>
+        </a>
+        <div id="collapsetraining" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'course:list_diskon' %}">List Jadwal Offline</a>
+            <a class="collapse-item" href="{% url 'course:list_jadwal_online' %}">List Jadwal Online</a>
+            <a class="collapse-item" href="{% url 'course:list_training' %}">List Training</a>
+            <a class="collapse-item" href="{% url 'course:list_diskon' %}">List Diskon</a>
+
+          </div>
+        </div>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'course:list_jadwal_online' %}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>List Jadwal Online</span></a>
-      </li>
-
-    <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'course:list_training' %}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>List Training</span></a>
-      </li>
-
-    <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'course:list_diskon' %}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>List Diskon</span></a>
-      </li>
 
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -47,6 +39,24 @@
           </div>
         </div>
       </li>
+
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsemarketing" aria-expanded="true" aria-controls="collapsemarketing">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Marketing</span>
+        </a>
+        <div id="collapsemarketing" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{% url 'marketing:interaksi_bulanan' %}">Grafik Interaksi</a>
+            <a class="collapse-item" href="{% url 'marketing:list_interaksi' %}">List Interaksi</a>
+
+          </div>
+        </div>
+      </li>
+
+
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">

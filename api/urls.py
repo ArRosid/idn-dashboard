@@ -6,6 +6,7 @@ from api.views import (
     peserta_offline,
     pendaftar_bulanan,
     peserta_bayar_bulanan,
+    interaksi_last_month,
 )
 
 app_name = "api"
@@ -17,4 +18,5 @@ urlpatterns = [
     path("peserta_offline/", peserta_offline, name="peserta_offline"),
     path("pendaftar_bulanan/", pendaftar_bulanan, name="pendaftar_bulanan"),
     path("peserta_bayar_bulanan/", peserta_bayar_bulanan, name="peserta_bayar_bulanan"),
+    path("interaksi_bulanan/", interaksi_last_month, name="interaksi_bulanan"),
 ]

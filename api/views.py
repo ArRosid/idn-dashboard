@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.http import JsonResponse
+from django.utils import timezone
 from rest_framework import generics
 from course.models import (
     Training,
@@ -8,6 +9,7 @@ from course.models import (
     MonthYearScheddule,
     Registration,
 )
+from marketing.models import Interaksi
 from api.serializers import TrainingSerializer, SchedduleSerizlizer
 
 
@@ -140,3 +142,30 @@ def peserta_bayar_bulanan(request):
 # based on jadwal
 def peserta_bulanan(request):
     pass
+
+
+def interaksi_last_month(request):
+    last_month_interaksi = []
+    month = timezone.now().month
+    queryset = Interaksi.objects.all()
+
+    dict_data = {}
+
+    for q in queryset:
+        if q.created_at.month == month:
+            last_month_interaksi.append(q)
+
+    for interaksi in last_month_interaksi:
+
+        # kalau belum punya data tentang tgl tersebut
+        if interaksi.created_at.day not in dict_data:
+            dict_data[interaksi.created_at.day] = 1
+
+        # kalau sudah punya data tentang tgl tersebut
+        else:
+            dict_data[interaksi.created_at.day] += 1
+
+    hari = list(dict_data.keys())
+    jumlah = list(dict_data.values())
+
+    return JsonResponse(data={"labels": hari, "data": jumlah})
