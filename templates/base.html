@@ -214,7 +214,12 @@
   <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
   <script>
       $(document).ready( function () {
-            $('#table_id').DataTable();
+            $('#table_id').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true
+            });
         } );
   </script>
   {% block js %}{% endblock js %}
