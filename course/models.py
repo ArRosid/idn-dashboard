@@ -25,6 +25,7 @@ class Training(BaseModel):
 
     class Meta:
         unique_together = ("category", "name", "duration", "price")
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
