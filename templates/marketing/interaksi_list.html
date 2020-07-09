@@ -6,7 +6,7 @@
         <a href="{% url 'marketing:add_interaksi' %}">
         <button type="button" class="mt-2 btn btn-primary mb-2">Add Interaksi</button>
     </a>
-    <table class="table" id="table_id">
+    <table class="table" id="table_id_interaksi">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -97,5 +97,28 @@
   </tbody>
 </table>
 
+
+{% endblock %}
+
+{% block js %}
+  <script>
+      $(document).ready( function () {
+            $('#table_id_interaksi').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                responsive: true,
+                "scrollX": true,
+                "columnDefs": [
+                     { "width": "400px", "targets": 8 },
+                     { "width": "100px", "targets": 2 },
+                     { "width": "50px", "targets": 4 },
+                     { "width": "50px", "targets": 5 },
+                     { "width": "50px", "targets": 6 },
+                     { "width": "50px", "targets": 7 },
+                   ]
+            });
+        } );
+  </script>
 
 {% endblock %}
