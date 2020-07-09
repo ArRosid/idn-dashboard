@@ -14,8 +14,7 @@ class InteraksiListView(generic.ListView):
 @staff_member_required(login_url="accounts:login")
 def createInteraksi(request):
     if request.method == "POST":
-
-        if request.POST["no_hp"] is not None:
+        if request.POST["no_hp"]:
             # format no hp to 62xxx
             request.POST["no_hp"][0][1:].replace(" ", "").replace("-", "")
             request.POST._mutable = True
