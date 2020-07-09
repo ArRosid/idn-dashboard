@@ -9,7 +9,9 @@ from marketing.choices import MarketingSourceChoices
 class Interaksi(BaseModel):
     tim_marketing = models.ForeignKey(User, on_delete=models.CASCADE)
     nama_client = models.CharField(max_length=255, unique=True)
-    training_terkait = models.ForeignKey(Training, on_delete=models.CASCADE, null=True)
+    training_terkait = models.ForeignKey(
+        Training, on_delete=models.CASCADE, null=True, blank=True
+    )
     sumber = models.CharField(max_length=200, choices=MarketingSourceChoices.choices)
     no_hp = models.CharField(max_length=100, blank=True, null=True, unique=True)
     email = models.CharField(max_length=100, blank=True, null=True, unique=True)
