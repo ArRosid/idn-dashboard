@@ -14,6 +14,24 @@ class InteraksiListView(generic.ListView):
 @staff_member_required(login_url="accounts:login")
 def createInteraksi(request):
     if request.method == "POST":
+        print(request.POST)
+        print(request.POST["no_hp"])
+        print(request.POST["no_hp"][0])
+        request.POST["no_hp"][0][1:].replace(" ", "").replace("-", "")
+        request.POST._mutable = True
+        if request.POST["no_hp"].startswith("0"):
+            request.POST["no_hp"] = "62" + request.POST["no_hp"][1:].replace(
+                " ", ""
+            ).replace("-", "")
+        elif request.POST["no_hp"].startswith("+"):
+            request.POST["no_hp"] = (
+                request.POST["no_hp"][1:].replace(" ", "").replace("-", "")
+            )
+        elif request.POST["no_hp"].startswith("6"):
+            request.POST["no_hp"] = (
+                request.POST["no_hp"].replace(" ", "").replace("-", "")
+            )
+
         form = InteraksiForm(request.POST)
         if form.is_valid():
             interaksi = form.save(commit=False)
