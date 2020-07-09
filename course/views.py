@@ -94,7 +94,13 @@ def daftar_training(request):
                         )
 
                 # set harga diskon, ini akan ditampilkan di admin berapa yg harus mereka bayar
-                reg.harga_diskon = harga_diskon
+
+                # untuk mtcna online harga diskon dibalikin ke harga asli
+                if reg.training.name == "MTCNA" and reg.training_type == 1:
+
+                    reg.harga_diskon = reg.training.price
+                else:
+                    reg.harga_diskon = harga_diskon
                 reg.save()
                 data = {
                     "name": reg.user.email,
@@ -102,7 +108,7 @@ def daftar_training(request):
                     "training_type": reg.get_training_type(),
                     "jadwal": f"{reg.scheddule.day.day}, {reg.month_year}",
                     "harga_asli": "{:,}".format(reg.training.price),
-                    "harga_diskon": "{:,}".format(harga_diskon),
+                    "harga_diskon": "{:,}".format(reg.harga_diskon),
                 }
                 SendEmail(user=reg.user).panduan_pembayaran(data)
                 messages.success(
@@ -228,7 +234,9 @@ def add_jadwal(request):
         request.POST._mutable = True
         day = request.POST.pop("day_")[0]
         month_year = MonthYearScheddule.objects.get(id=request.POST.get("month_year"))
-        day, created = DayScheddule.objects.get_or_create(day=day, month_year=month_year)
+        day, created = DayScheddule.objects.get_or_create(
+            day=day, month_year=month_year
+        )
         form = SchedduleForm(request.POST)
         if form.is_valid():
             jadwal = form.save(commit=False)
