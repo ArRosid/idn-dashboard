@@ -7,12 +7,12 @@ from marketing.choices import MarketingSourceChoices
 
 class Interaksi(BaseModel):
     tim_marketing = models.ForeignKey(User, on_delete=models.CASCADE)
-    nama_client = models.CharField(max_length=255)
+    nama_client = models.CharField(max_length=255, unique=True)
     sumber = models.CharField(max_length=200, choices=MarketingSourceChoices.choices)
-    no_hp = models.CharField(max_length=100, blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
-    fb = models.CharField(max_length=100, blank=True, null=True)
-    ig = models.CharField(max_length=100, blank=True, null=True)
+    no_hp = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    email = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    fb = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    ig = models.CharField(max_length=100, blank=True, null=True, unique=True)
     topik = models.TextField()
 
     def __str__(self):
