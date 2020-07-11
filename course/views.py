@@ -72,6 +72,12 @@ def daftar_training(request):
                             "Diskon tidak berlaku untuk tipe training ini atau sudah berahir"
                         )
 
+                # if they use their affiliate code, raise exception
+                if reg.affiliate_kode == request.user.profile.affiliate_id:
+                    raise Exception(
+                        "Anda tidak bisa menggunakan kode affiliate milik Anda sendiri untuk mendaftar"
+                    )
+
                 # if they use affiliate kode, decrease harga diskon 5% from
                 if reg.affiliate_kode:
                     Profile.objects.get(affiliate_id=reg.affiliate_kode)
@@ -598,8 +604,8 @@ def upload_jadwal(request):
             os.remove(file.file.url.strip("/"))
             file.delete()
 
-            #master_header = ["ï»¿training", "training_type", "month", "year", "day"]
-            master_header = ['\ufefftraining', 'training_type', 'month', 'year', 'day']
+            # master_header = ["ï»¿training", "training_type", "month", "year", "day"]
+            master_header = ["\ufefftraining", "training_type", "month", "year", "day"]
             header = content.pop(0)
             if header != master_header:
                 messages.error(
