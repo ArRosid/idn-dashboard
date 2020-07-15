@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
+from django.db.utils import IntegrityError
 from marketing.models import Interaksi
 from marketing.forms import InteraksiForm
 
@@ -35,7 +36,12 @@ def createInteraksi(request):
         if form.is_valid():
             interaksi = form.save(commit=False)
             interaksi.tim_marketing = request.user
-            interaksi.save()
+            try:
+                interaksi.save()
+            except IntegrityError:
+                messages.error(request, "Data sudah ada pada hari ini")
+                return redirect("marketing:list_interaksi")
+
             messages.success(request, "Interaksi berhasil ditambahkan")
             return redirect("marketing:list_interaksi")
     else:
