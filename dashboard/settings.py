@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     "home",
     "api",
     "marketing",
+    "operasional",
+    "project",
 ]
 
 MIDDLEWARE = [
