@@ -147,9 +147,11 @@ def peserta_bulanan(request):
 def interaksi_last_month(request):
     last_month_interaksi = []
     month = timezone.now().month
-    queryset = Interaksi.objects.all()
+    queryset = Interaksi.objects.all().order_by("-created_at")
 
     dict_data = {}
+    hari = []
+    jumlah = []
 
     for q in queryset:
         if q.created_at.month == month:
