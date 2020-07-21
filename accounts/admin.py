@@ -32,6 +32,7 @@ class UserAdmin(BaseUserAdmin):
         return instance.profile.company
 
     get_company.short_description = "Company"
+    search_fields = ["email"]
 
 
 @admin.register(LinkToken)
@@ -42,3 +43,4 @@ class LinkTokenAdmin(admin.ModelAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ["user", "company"]
+    search_fields = ["user__email"]
