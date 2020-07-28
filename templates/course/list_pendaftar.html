@@ -21,6 +21,8 @@
       <th scope="col">Training</th>
       <th scope="col">Training Type</th>
       <th scope="col">Jadwal</th>
+      <th scope="col">Harga Asli</th>
+      <th scope="col">Harga Diskon</th>
       <th scope="col">Jumlah FU</th>
       <th scope="col">Last FU</th>
       <th scope="col">Created At</th>
@@ -36,6 +38,8 @@
       <td>{{ pendaftar.training.name }}</td>
       <td>{{ pendaftar.get_training_type }}</td>
       <td>{{ pendaftar.scheddule }}</td>
+      <td>{{ pendaftar.training.price }}</td>
+      <td>{{ pendaftar.format_harga_diskon }}</td>
       <td>{{ pendaftar.fu_count }}</td>
       <td>{{ pendaftar.last_fu }}</td>
       <td>{{ pendaftar.created_at }}</td>
