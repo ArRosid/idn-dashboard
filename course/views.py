@@ -59,6 +59,9 @@ def daftar_training(request):
 
                 # if they use diskon kode
                 if reg.diskon_kode:
+                    if reg.training.name == "AWS":
+                        raise Exception("Diskon tidak berlaku untuk training ini")
+
                     diskon = Discount.objects.get(kode=reg.diskon_kode)
                     if (
                         timezone.now().date() <= diskon.end_date
