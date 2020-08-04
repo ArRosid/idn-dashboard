@@ -85,7 +85,7 @@ class TrainingForm(forms.ModelForm):
 class DiscountForm(forms.ModelForm):
     class Meta:
         model = Discount
-        fields = ("kode", "persen", "end_date", "training_type")
+        fields = ("kode", "persen", "end_date", "training_type", "diskon_pelajar")
         widgets = {"end_date": forms.TextInput(attrs={"placeholder": "YYYY-MM-DD"})}
 
 

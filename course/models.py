@@ -138,10 +138,11 @@ class PaymentConfirm(BaseModel):
 
 
 class Discount(BaseModel):
-    persen = models.PositiveIntegerField()
+    persen = models.PositiveIntegerField(null=True, blank=True)
     kode = models.CharField(max_length=100, unique=True)
     end_date = models.DateField()
     training_type = models.PositiveSmallIntegerField(choices=TrainingType.choices)
+    diskon_pelajar = models.BooleanField(default=False)
 
     def __str__(self):
         return self.kode

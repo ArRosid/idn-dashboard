@@ -67,9 +67,22 @@ def daftar_training(request):
                         timezone.now().date() <= diskon.end_date
                         and reg.training_type == diskon.training_type
                     ):
-                        harga_diskon = reg.training.price - (
-                            reg.training.price * diskon.persen / 100
-                        )
+
+                        # if diskon pelajar
+                        if diskon.diskon_pelajar:
+                            if reg.affiliate_kode:
+                                raise Exception(
+                                    "Tidak bisa menggunakan affiliate jika sudah menggunakan diskon pelajar/pengajar"
+                                )
+
+                            if reg.training_type == 0: # offline
+                                harga_diskon = reg.training.price - 1000000
+                            elif reg.training_type == 1: # online
+                                harga_diskon = reg.training.price - 700000
+                        else:
+                            harga_diskon = reg.training.price - (
+                                reg.training.price * diskon.persen / 100
+                            )
                     else:
                         raise Exception(
                             "Diskon tidak berlaku untuk tipe training ini atau sudah berahir"
