@@ -70,7 +70,7 @@ def daftar_training(request):
 
                         # if diskon pelajar
                         if diskon.diskon_pelajar:
-                            if reg.affiliate_kode:
+                            if reg.affiliate_kode or reg.affiliate_point_used:
                                 raise Exception(
                                     "Tidak bisa menggunakan affiliate jika sudah menggunakan diskon pelajar/pengajar"
                                 )
