@@ -57,6 +57,15 @@ def daftar_training(request):
                         "Mohon maaf, Jadwal ini sudah Full, silahkan pilih jadwal lain"
                     )
 
+                if reg.diskon_kode and reg.training.exclude_diskon:
+                    raise Exception("Tidak bisa menggunakan diskon untuk training ini")
+
+                if reg.affiliate_kode and reg.training.exclude_diskon:
+                    raise Exception("Tidak bisa menggunakan Affiliate Kode pada training ini")
+
+                if reg.affiliate_point_used and reg.training.exclude_diskon:
+                    raise Exception("Tidak bisa menggunakan affiliate point pada training ini")
+
                 # if they use diskon kode
                 if reg.diskon_kode:
                     if reg.training.name == "AWS":

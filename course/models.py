@@ -22,6 +22,7 @@ class Training(BaseModel):
     name = models.CharField(max_length=100)
     duration = models.PositiveSmallIntegerField()
     price = models.PositiveIntegerField()
+    exclude_diskon = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ("category", "name", "duration", "price")
