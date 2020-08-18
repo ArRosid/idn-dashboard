@@ -16,6 +16,8 @@
       <th scope="col">Jumlah Bayar</th>
       <th scope="col">Bukti Pembayaran</th>
       <th scope="col">No HP</th>
+      <th scope="col">Email</th>
+      <th scope="col">Alamat</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
@@ -31,6 +33,8 @@
       <td>{{ pembayaran.get_amount }}</td>
       <td><a target="_blank" href="{{ pembayaran.proof_of_payment.url }}">Bukti</a> </td>
       <td><a href="{{ pembayaran.user.profile.get_wa_link }}" target="_blank">  {{ pembayaran.user.profile.phone_number }}</a></td>
+      <td>{{ pembayaran.user.profile.address }}</td>
+      <td>{{ pembayaran.user.email }}</td>
 
       <td>
           <div class="btn-group">
