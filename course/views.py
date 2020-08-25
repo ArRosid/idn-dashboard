@@ -52,7 +52,7 @@ def daftar_training(request):
                 if (
                     max_peserta
                     and reg.scheddule.get_jml_peserta() >= max_peserta.max_peserta
-                ):
+                ) and "bootcamp" not in reg.training.name.lower():
                     raise Exception(
                         "Mohon maaf, Jadwal ini sudah Full, silahkan pilih jadwal lain"
                     )
