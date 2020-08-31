@@ -32,6 +32,7 @@ from course.views import (
     upload_jadwal,
     set_max_peserta,
     fu,
+    konfirmasi_pembayaran_manual,
 )
 
 app_name = "course"
@@ -98,4 +99,5 @@ urlpatterns = [
     path("upload_jadwal/", upload_jadwal, name="upload_jadwal"),
     path("set_max_peserta/", set_max_peserta, name="set_max_peserta"),
     path("fu/<int:reg_id>/", fu, name="fu"),
+    path("konfirmasi_pembayaran_manual/", konfirmasi_pembayaran_manual, name="konfirmasi_pembayaran_manual")
 ]

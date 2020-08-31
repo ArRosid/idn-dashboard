@@ -16,6 +16,7 @@ from course.forms import (
     DiscountForm,
     JadwalFileForm,
     MaxPesertaForm,
+    PaymentConfirmManual
 )
 from course.models import (
     Registration,
@@ -704,3 +705,20 @@ def fu(request, reg_id):
     url = f"{wa_link}&text=Hi%20Kaka%20*{nama}*%2C%0A%0ABagaimana%20kabarnya%3F%20Semoga%20sehat%20selalu%20yaa%20%3A)%0A%0APerkenalkan%20saya%20vita%20dari%20IDN.%20Kami%20ingin%20melakukan%20konfirmasi%20bahwa%20kakak%20melakukan%20pendaftaran%20pada%3A%0A%0ATraining%20%3A%20*{training}*%0ATipe%20Training%20%3A%20*{training_type}*%0AJadwal%20%3A%20*{jadwal}*%0A%0AApakah%20kakak%20jadi%20ingin%20ikut%20training%20tersebut%3F%20Jika%20iya%2C%20bisa%20segera%20melakukan%20pembayaran%20ke%20salah%20satu%20rekening%20berikut%20ya%20kak%0A%0A▪%EF%B8%8FBCA%205435040460%20an%20Deny%20Kurnia%20Nawangsari%0A▪%EF%B8%8FMandiri%201170000007724%20an%20Deny%20Kurnia%20Nawangsari%0A%0AKemudian%20kakak%20bisa%20melakukan%20konfirmasi%20pembayaran%20di%20https%3A%2F%2Fmy.idn.id%0A%0AJika%20ada%20pertanyaan%20lebih%20lanjut%2C%20bisa%20reply%20chat%20ini%20ya%20kak%20%3A)"
 
     return redirect(url)
+
+
+@staff_member_required(login_url="accounts:login")
+def konfirmasi_pembayaran_manual(request):
+    if request == "POST":
+        form = PaymentConfirmManual(request.POST, request.FILES)
+        if form.is_valid():
+            payment = form.save()
+            payment.save()
+            messages.success(
+                request,
+                "Konfirmasi Pembayaran manual Berhasil",
+            )
+            return redirect("course:list_pembayaran")
+    else:
+        form = PaymentConfirmManual()
+    return render(request, "course/payment_confirm.html", {"form": form})

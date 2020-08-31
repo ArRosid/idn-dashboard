@@ -99,3 +99,9 @@ class MaxPesertaForm(forms.ModelForm):
     class Meta:
         model = MaxPeserta
         fields = ("max_peserta",)
+
+
+class PaymentConfirmManual(forms.ModelForm):
+    class Meta:
+        model = PaymentConfirm
+        fields = ("user", "registration", "amount", "proof_of_payment")
