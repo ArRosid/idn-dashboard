@@ -709,10 +709,11 @@ def fu(request, reg_id):
 
 @staff_member_required(login_url="accounts:login")
 def konfirmasi_pembayaran_manual(request):
-    if request == "POST":
+    if request.method == "POST":
         form = PaymentConfirmManual(request.POST, request.FILES)
         if form.is_valid():
-            payment = form.save()
+            payment = form.save(commit=False)
+            payment.status = 1
             payment.save()
             messages.success(
                 request,
