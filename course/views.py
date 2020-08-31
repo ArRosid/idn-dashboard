@@ -714,7 +714,6 @@ def konfirmasi_pembayaran_manual(request):
         if form.is_valid():
             payment = form.save(commit=False)
             payment.status = 1
-            payment.proof_of_payment = None
             payment.save()
             messages.success(
                 request,
