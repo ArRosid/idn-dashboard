@@ -20,10 +20,8 @@ class SchedduleSerizlizer(serializers.ModelSerializer):
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    training = serializers.SlugRelatedField(read_only=True, slug_field="name")
+
     class Meta:
         model = Registration
-        fields = ("id", "user", "training")
-
-    def to_representation(self, instance):
-        instance.training = Training.objects.get(id=instance.training).name
-        return super(RegistrationSerializer, self).to_representation(instance)
+        fields = ("id", "training")

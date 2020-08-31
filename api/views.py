@@ -178,5 +178,6 @@ class RegistrationUserList(generics.ListAPIView):
     serializer_class = RegistrationSerializer
 
     def get_queryset(self):
+        print(self.request.query_params)
         user_id = self.request.query_params.get("user_id")
         return Registration.objects.filter(user=User.objects.get(id=user_id))
