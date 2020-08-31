@@ -108,4 +108,4 @@ class PaymentConfirmManual(forms.ModelForm):
 
     class Meta:
         model = PaymentConfirm
-        fields = ("user", "registration", "amount", "proof_of_payment")
+        fields = ("user", "registration", "amount")
