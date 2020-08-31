@@ -16,7 +16,7 @@
     {#Jika training category ganti, list training ganti#}
  $("#id_user").change(function () {
     $('#id_registration').html("<option value=''>Loading...</option>");
-    let category_id = $("#id_user").val();
+    let user_id = $("#id_user").val();
     $.ajax({
         url: "{% url 'api:RegistrationUserList' %}",
         type: "GET",
