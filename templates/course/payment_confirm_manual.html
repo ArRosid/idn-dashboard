@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3 class="card-title">Konfirmasi Pembayaran</h3>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+      {% include 'includes/form.html' %}
+        <button type="submit" class="mt-2 btn btn-success">Upload</button>
+  </form>
+
+{% endblock %}
+
+{% block js %}
+    <script>
+
+    {#Jika training category ganti, list training ganti#}
+ $("#id_user").change(function () {
+    $('#id_registration').html("<option value=''>Loading...</option>");
+    let category_id = $("#id_user").val();
+    $.ajax({
+        url: "{% url 'api:RegistrationUserList' %}",
+        type: "GET",
+        data: {user_id:user_id},
+        success: function (res, textStatus, jQxhr) {
+            console.log(res)
+            $('#id_registration').html("");
+            for (i in res) {
+                $('#id_registration').append("<option value='" + res[i]['id'] + "'>" + res[i]['training'] + "</option>");
+            }
+        },
+        error: function (jqXhr, textStatus, errorThrown) {
+            //console.log(errorThrown);
+        }
+    });
+ });
+
+
+    </script>
+
+{% endblock js %}

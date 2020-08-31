@@ -721,4 +721,4 @@ def konfirmasi_pembayaran_manual(request):
             return redirect("course:list_pembayaran")
     else:
         form = PaymentConfirmManual()
-    return render(request, "course/payment_confirm.html", {"form": form})
+    return render(request, "course/payment_confirm_manual.html", {"form": form})

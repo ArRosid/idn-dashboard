@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import timezone
 from rest_framework import generics
+from accounts.models import User
 from course.models import (
     Training,
     TrainingCategory,
@@ -10,7 +11,7 @@ from course.models import (
     Registration,
 )
 from marketing.models import Interaksi
-from api.serializers import TrainingSerializer, SchedduleSerizlizer
+from api.serializers import TrainingSerializer, SchedduleSerizlizer, RegistrationSerializer
 
 
 class TrainingList(generics.ListAPIView):
@@ -171,3 +172,11 @@ def interaksi_last_month(request):
     jumlah = list(dict_data.values())
 
     return JsonResponse(data={"labels": hari, "data": jumlah})
+
+
+class RegistrationUserList(generics.ListAPIView):
+    serializer_class = RegistrationSerializer
+
+    def get_queryset(self):
+        user_id = self.request.query_params.get("user_id")
+        return Registration.objects.filter(user=User.objects.get(id=user_id))

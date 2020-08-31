@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from course.models import Training, Scheddule, DayScheddule
+from course.models import Training, Scheddule, DayScheddule, Registration
 
 
 class TrainingSerializer(serializers.ModelSerializer):
@@ -17,3 +17,9 @@ class SchedduleSerizlizer(serializers.ModelSerializer):
     class Meta:
         model = Scheddule
         fields = ("id", "day")
+
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Registration
+        fields = ("id", "user", "training")
