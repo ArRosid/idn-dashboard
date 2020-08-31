@@ -23,3 +23,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Registration
         fields = ("id", "user", "training")
+
+    def to_representation(self, instance):
+        instance.training = Training.objects.get(id=instance.training).name
+        return super(RegistrationSerializer, self).to_representation(instance)
