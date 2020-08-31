@@ -122,7 +122,7 @@ class PaymentConfirm(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     registration = models.ForeignKey(Registration, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    proof_of_payment = models.ImageField(upload_to=upload_bukti_pembayaran, default="static/img/idn.png")
+    proof_of_payment = models.ImageField(upload_to=upload_bukti_pembayaran, null=True, blank=True)
     status = models.PositiveSmallIntegerField(choices=RegistrationPaymentStatus.choices)
 
     class Meta:

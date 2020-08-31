@@ -33,7 +33,7 @@
       <td>{{ pembayaran.registration.scheddule }}</td>
       <td>{{ pembayaran.registration.format_harga_diskon }}</td>
       <td>{{ pembayaran.get_amount }}</td>
-      <td><a target="_blank" href="{{ pembayaran.proof_of_payment.url }}">Bukti</a> </td>
+      <td><a target="_blank" {% if pembayaran.proof_of_payment %} href="{{ pembayaran.proof_of_payment.url }}" {% else %} href="#" {% endif %}>Bukti</a> </td>
       <td><a href="{{ pembayaran.user.profile.get_wa_link }}" target="_blank">  {{ pembayaran.user.profile.phone_number }}</a></td>
       <td>{{ pembayaran.user.profile.address }}</td>
       <td>{{ pembayaran.user.email }}</td>
