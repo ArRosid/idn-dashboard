@@ -1,4 +1,5 @@
 from django import forms
+from accounts.models import User
 from course.models import Registration
 from course.choices import TrainingType
 from course.models import (
@@ -102,6 +103,9 @@ class MaxPesertaForm(forms.ModelForm):
 
 
 class PaymentConfirmManual(forms.ModelForm):
+    user = forms.ModelChoiceField(User.objects.all().order_by("email"))
+    registration = forms.ModelChoiceField(Registration.objects.all().order_by("user__email"))
+
     class Meta:
         model = PaymentConfirm
         fields = ("user", "registration", "amount", "proof_of_payment")
