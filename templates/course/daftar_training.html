@@ -3,6 +3,8 @@
 
 {% block content %}
     <h3 class="card-title">Daftar Training</h3>
+  <strong style="color: red">Gunakan diskon kode TRAINING_ONLINE jika memilih Training Online untuk mendapatkan diskon 10%</strong>
+
   <div class="row">
     <div class="col-lg-6 col-md-8 col-sm-10">
       <form method="post" novalidate>
@@ -32,7 +34,6 @@
                 {% endif %}
             </div>
           {% endfor %}
-          <strong>Gunakan diskon kode TRAINING_ONLINE jika memilih Training Online untuk mendapatkan diskon 10%</strong>
           <br>
         <button type="submit" class="mt-2 btn btn-success">{{ button }}</button>
       </form>
