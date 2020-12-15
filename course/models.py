@@ -44,7 +44,7 @@ class MonthYearScheddule(BaseModel):
 
 
 class DayScheddule(BaseModel):
-    month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.CASCADE)
+    month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.SET_NULL, null=True, blank=True)
     day = models.CharField(max_length=100)
 
     class Meta:
@@ -57,7 +57,7 @@ class DayScheddule(BaseModel):
 class Scheddule(BaseModel):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
     training_type = models.PositiveSmallIntegerField(choices=TrainingType.choices)
-    month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.CASCADE)
+    month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.SET_NULL, null=True, blank=True)
     day = models.ForeignKey(DayScheddule, on_delete=models.CASCADE)
 
     class Meta:
@@ -80,7 +80,7 @@ class Registration(BaseModel):
     training_category = models.ForeignKey(TrainingCategory, on_delete=models.CASCADE)
     training_type = models.PositiveSmallIntegerField(choices=TrainingType.choices)
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
-    month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.CASCADE)
+    month_year = models.ForeignKey(MonthYearScheddule, on_delete=models.SET_NULL, null=True, blank=True)
     scheddule = models.ForeignKey(Scheddule, on_delete=models.CASCADE)
     status = models.PositiveSmallIntegerField(
         choices=RegistrationPaymentStatus.choices,
