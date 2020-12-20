@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "marketing",
     "operasional",
     "project",
+    "import_export",
 ]
 
 MIDDLEWARE = [
