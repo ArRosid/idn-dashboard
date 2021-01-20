@@ -86,12 +86,12 @@ def daftar_training(request):
                                 )
 
                             if reg.training_type == 0: # offline
-                                harga_diskon = reg.training.price - 1000000
+                                harga_diskon = reg.training.price - 500000
                             elif reg.training_type == 1: # online kurangi 15% & 700rb
                                 harga_diskon = reg.training.price - (
                                         reg.training.price * 10 / 100
                                 )
-                                harga_diskon = harga_diskon - 700000
+                                harga_diskon = harga_diskon - 500000
 
                         else:
                             harga_diskon = reg.training.price - (
